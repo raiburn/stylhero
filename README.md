@@ -171,3 +171,18 @@ Tell Claude: *"use my Stylhero design system"* (or paste the link above). Claude
 4. Ask Claude to "sync Stylhero to the design system" to republish the Claude version.
 
 Adding a color: add it to `color.tokens` with a light and dark value. It becomes `var(--name)` in CSS and `bg-name` / `text-name` in Tailwind automatically. If it's a text/background pair, add it to `PAIRS` in `ui/scripts/build-tokens.mjs` so contrast is checked.
+
+## Versioning
+
+`@stylhero/ui` follows [semantic versioning](https://semver.org). Every release is listed in [`ui/CHANGELOG.md`](ui/CHANGELOG.md).
+
+While the package is in **0.x**, a minor version (0.4 → 0.5) may contain breaking changes. They are always listed in the changelog under **Changed** or **Removed**, so read those sections before upgrading. Patch versions (0.4.0 → 0.4.1) are always safe. Pin with `~0.4.0` if you want to accept only patches.
+
+Releases are managed with [Changesets](https://changesets.dev). When your change should show up in the next release, run this in `ui/` and commit the file it creates along with your change:
+
+```bash
+cd ui
+npm run changeset      # pick patch/minor, write a one-line summary for users
+```
+
+To cut a release (in `ui/`): `npx changeset status` shows what is pending, and `npm run version` bumps `package.json` and writes the entries into `CHANGELOG.md`. Then tidy the new entry into Added / Changed / Removed and commit. Details are in `ui/.changeset/README.md`.
