@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo, useState, type ReactNode } from "react";
 import { cn } from "../cn";
 import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon, SearchIcon } from "../icons";

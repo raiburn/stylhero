@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, type ReactElement, type ReactNode } from "react";
 import {
   autoUpdate, flip, offset, shift, useDismiss, useFloating, useFocus, useHover, useInteractions, useMergeRefs, useRole,

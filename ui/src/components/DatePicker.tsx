@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import {
   autoUpdate, flip, offset, shift, useClick, useDismiss, useFloating, useInteractions, useRole, FloatingFocusManager, FloatingPortal,
