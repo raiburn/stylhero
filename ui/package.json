@@ -26,6 +26,12 @@
   "sideEffects": [
     "*.css"
   ],
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "tokens": "node scripts/build-tokens.mjs",
     "tokens:watch": "node --watch-path=../tokens.json scripts/build-tokens.mjs",
@@ -33,7 +39,9 @@
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
     "playground": "node playground/build.mjs",
-    "test": "node playground/build.mjs --no-open && node playground/test.mjs"
+    "test": "node playground/build.mjs --no-open && node playground/test.mjs",
+    "check:pack": "npm pack --dry-run",
+    "prepublishOnly": "npm run typecheck && npm run build && npm test"
   },
   "peerDependencies": {
     "lucide-react": ">=0.400.0",
