@@ -1,0 +1,25 @@
+<!-- @dsCard group="Navigation" height=170 subtitle="Switch between views of one thing" -->
+<div style="padding:24px;background:var(--surface)">
+  <div class="sh-tabs">
+    <div class="sh-tabs__list" role="tablist" aria-label="Customer">
+      <button class="sh-tabs__tab" role="tab" aria-selected="true" data-p="pv-t1">Overview</button>
+      <button class="sh-tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-p="pv-t2">Visits</button>
+      <button class="sh-tabs__tab" role="tab" aria-selected="false" tabindex="-1" data-p="pv-t3">Rewards</button>
+    </div>
+    <div class="sh-tabs__panel" id="pv-t1" role="tabpanel" style="color:var(--ink-muted)">7 of 10 stamps. Member since March 2026.</div>
+    <div class="sh-tabs__panel" id="pv-t2" role="tabpanel" style="color:var(--ink-muted)" hidden>Last visit 3 days ago. 23 visits in total.</div>
+    <div class="sh-tabs__panel" id="pv-t3" role="tabpanel" style="color:var(--ink-muted)" hidden>2 free coffees redeemed.</div>
+  </div>
+</div>
+<script>
+document.querySelectorAll(".sh-tabs__tab").forEach(function (tab) {
+  tab.addEventListener("click", function () {
+    document.querySelectorAll(".sh-tabs__tab").forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.dataset.p).hidden = !on;
+    });
+  });
+});
+</script>

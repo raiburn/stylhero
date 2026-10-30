@@ -1,0 +1,11 @@
+<!-- @dsCard group="Forms" height=110 subtitle="Filter, removable and plain chips" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+    <span class="sh-chip sh-chip--selected"><button class="sh-chip__main" aria-pressed="true"><i data-lucide="check"></i><span>Active only</span></button></span>
+    <span class="sh-chip"><button class="sh-chip__main" aria-pressed="false"><span>Reward ready</span></button></span>
+    <span class="sh-chip"><span class="sh-chip__main"><span>Coffee</span></span><button class="sh-chip__remove" aria-label="Remove Coffee"><i data-lucide="x"></i></button></span>
+    <span class="sh-chip"><span class="sh-chip__main"><i data-lucide="map-pin"></i><span>Hermosillo</span></span></span>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

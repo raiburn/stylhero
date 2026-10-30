@@ -1,0 +1,16 @@
+<!-- @dsCard group="Overlays" height=320 subtitle="Side panel (right, left or bottom sheet)" -->
+<div style="position:relative;height:320px;overflow:hidden;background:var(--surface-sunken);font-family:var(--font-sans)">
+  <div style="position:absolute;inset:0;background:rgb(11 27 51 / 0.5)"></div>
+  <div class="sh-drawer" style="position:absolute;top:0;right:0;height:100%;width:min(340px,85%);display:block">
+    <div class="sh-drawer__panel">
+      <div class="sh-dialog__header"><h2 class="sh-dialog__title">Filters</h2><button class="sh-dialog__close" aria-label="Close"><i data-lucide="x"></i></button></div>
+      <div class="sh-drawer__body" style="display:flex;flex-direction:column;gap:12px">
+        <label class="sh-check"><input type="checkbox" checked><span>Reward ready</span></label>
+        <label class="sh-check"><input type="checkbox"><span>Inactive 30+ days</span></label>
+      </div>
+      <div class="sh-dialog__footer"><button class="sh-btn sh-btn--secondary">Reset</button><button class="sh-btn sh-btn--primary">Show 24</button></div>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

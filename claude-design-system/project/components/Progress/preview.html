@@ -1,0 +1,15 @@
+<!-- @dsCard group="Feedback" height=170 subtitle="Linear bar and ring" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <div style="display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+    <div class="sh-progress sh-progress--primary" style="flex:1;min-width:220px">
+      <div class="sh-progress__head"><span>Importing customers</span><span class="sh-progress__value">40%</span></div>
+      <div class="sh-progress__track" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"><div class="sh-progress__bar" style="width:40%"></div></div>
+    </div>
+    <div class="sh-ring sh-progress--primary" style="width:64px;height:64px" role="progressbar" aria-valuenow="7" aria-valuemin="0" aria-valuemax="10" aria-label="Stamps">
+      <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" class="sh-ring__track"/><circle cx="18" cy="18" r="15.5" class="sh-ring__bar" stroke-dasharray="97.4" stroke-dashoffset="29.2"/></svg>
+      <span class="sh-ring__text" style="font-size:14px">7/10</span>
+    </div>
+  </div>
+  <div class="sh-progress sh-progress--success"><div class="sh-progress__track"><div class="sh-progress__bar" style="width:100%"></div></div></div>
+</div>
+<script></script>

@@ -1,0 +1,12 @@
+<!-- @dsCard group="Navigation" height=90 subtitle="Page numbers with gaps" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <nav aria-label="Pagination" class="sh-pagination">
+    <button class="sh-pagination__item" aria-label="Previous page"><i data-lucide="chevron-left"></i></button>
+    <button class="sh-pagination__item">1</button><span class="sh-pagination__gap">…</span>
+    <button class="sh-pagination__item">5</button><button class="sh-pagination__item" aria-current="page">6</button><button class="sh-pagination__item">7</button>
+    <span class="sh-pagination__gap">…</span><button class="sh-pagination__item">20</button>
+    <button class="sh-pagination__item" aria-label="Next page"><i data-lucide="chevron-right"></i></button>
+  </nav>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

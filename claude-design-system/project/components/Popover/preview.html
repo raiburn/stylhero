@@ -1,0 +1,13 @@
+<!-- @dsCard group="Overlays" height=250 subtitle="Floating panel anchored to a trigger" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <div style="display:flex;flex-direction:column;align-items:flex-start;gap:8px">
+    <button class="sh-btn sh-btn--secondary"><i data-lucide="sticky-note"></i>Add note</button>
+    <div class="sh-popover" style="position:static;animation:none">
+      <h3 class="sh-popover__title">Quick note</h3>
+      <div class="sh-field"><label class="sh-field__label" for="pv-pop">Note</label><input class="sh-input" id="pv-pop" placeholder="Prefers oat milk"></div>
+      <div><button class="sh-btn sh-btn--primary sh-btn--sm">Save note</button></div>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

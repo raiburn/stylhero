@@ -1,0 +1,49 @@
+/*
+  GENERATED from tokens.json by scripts/build-tokens.mjs. Do not edit; edit tokens.json and run `npm run tokens`.
+
+  Stylhero for Tailwind CSS v4. In your app's globals.css:
+    @import "tailwindcss";
+    @import "@stylhero/ui/tailwind.css";
+  Gives you bg-primary, text-ink, border-line, font-display, rounded-lg, ...
+  Spacing already matches: p-4 = 16px = --space-4.
+*/
+@import "./tokens.css";
+
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-line: var(--line);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-primary-soft: var(--primary-soft);
+  --color-sky: var(--sky);
+  --color-sky-soft: var(--sky-soft);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+  --shadow-card: var(--shadow-card);
+  --shadow-dialog: var(--shadow-dialog);
+}
+
+/* Tailwind's font-sans/mono and rounded-* read --font-* and --radius-*,
+   which tokens.css already defines, so they use Stylhero values. Extra font families: */
+@theme {
+  --font-display: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+}

@@ -1,0 +1,9 @@
+<!-- @dsCard group="Forms" height=130 subtitle="Range input with value" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <div class="sh-field" style="max-width:360px">
+    <label class="sh-field__label" for="pv-slider"><span class="sh-slider__label">Stamps per visit<output>2</output></span></label>
+    <input type="range" class="sh-slider" id="pv-slider" min="1" max="5" value="2" style="--sh-fill:25%" oninput="this.style.setProperty('--sh-fill',((this.value-1)/4*100)+'%');this.labels[0].querySelector('output').textContent=this.value">
+    <span class="sh-field__hint">How many stamps one purchase earns.</span>
+  </div>
+</div>
+<script></script>

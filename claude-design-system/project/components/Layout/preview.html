@@ -1,0 +1,12 @@
+<!-- @dsCard group="Layout" height=230 subtitle="Container, Stack and Grid" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(160px,100%),1fr));gap:16px">
+    <div class="sh-card" style="padding:16px"><span class="sh-text sh-text--label sh-text--muted">Grid cell</span></div>
+    <div class="sh-card" style="padding:16px"><span class="sh-text sh-text--label sh-text--muted">Grid cell</span></div>
+    <div class="sh-card" style="padding:16px"><span class="sh-text sh-text--label sh-text--muted">Grid cell</span></div>
+  </div>
+  <div class="sh-stack" style="flex-direction:row;gap:12px;align-items:center;flex-wrap:wrap">
+    <button class="sh-btn sh-btn--primary">Stack row</button><button class="sh-btn sh-btn--secondary">gap = space-3</button>
+  </div>
+</div>
+<script></script>

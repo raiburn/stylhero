@@ -1,0 +1,14 @@
+<!-- @dsCard group="Navigation" height=200 subtitle="Progress through a multi-step flow" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <ol class="sh-stepper sh-stepper--horizontal">
+    <li class="sh-stepper__step sh-stepper__step--done"><span class="sh-stepper__dot"><i data-lucide="check"></i></span><span class="sh-stepper__text"><span class="sh-stepper__label">Account</span></span></li>
+    <li class="sh-stepper__step sh-stepper__step--current" aria-current="step"><span class="sh-stepper__dot">2</span><span class="sh-stepper__text"><span class="sh-stepper__label">Business</span></span></li>
+    <li class="sh-stepper__step sh-stepper__step--todo"><span class="sh-stepper__dot">3</span><span class="sh-stepper__text"><span class="sh-stepper__label">Cards</span></span></li>
+  </ol>
+  <ol class="sh-stepper sh-stepper--vertical">
+    <li class="sh-stepper__step sh-stepper__step--done"><span class="sh-stepper__dot"><i data-lucide="check"></i></span><span class="sh-stepper__text"><span class="sh-stepper__label">Card printed</span><span class="sh-stepper__desc">Oct 12</span></span></li>
+    <li class="sh-stepper__step sh-stepper__step--current" aria-current="step"><span class="sh-stepper__dot">2</span><span class="sh-stepper__text"><span class="sh-stepper__label">Shipping</span><span class="sh-stepper__desc">Arrives Friday</span></span></li>
+  </ol>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

@@ -1,0 +1,18 @@
+<!-- @dsCard group="Actions" height=120 subtitle="Primary, secondary, ghost, danger; two sizes; Lucide icons" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans)">
+  <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+    <button class="sh-btn sh-btn--primary"><i data-lucide="plus"></i>Add stamp</button>
+    <button class="sh-btn sh-btn--secondary"><i data-lucide="history"></i>View history</button>
+    <button class="sh-btn sh-btn--ghost">Cancel</button>
+    <button class="sh-btn sh-btn--danger"><i data-lucide="trash-2"></i>Delete card</button>
+    <button class="sh-btn sh-btn--primary" disabled>Saving…</button>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+    <button class="sh-btn sh-btn--primary sh-btn--sm"><i data-lucide="gift"></i>Redeem</button>
+    <button class="sh-btn sh-btn--secondary sh-btn--sm"><i data-lucide="pencil"></i>Edit</button>
+    <button class="sh-btn sh-btn--ghost sh-btn--sm">Skip<i data-lucide="arrow-right"></i></button>
+    <button class="sh-btn sh-btn--secondary sh-btn--sm" aria-label="More options"><i data-lucide="ellipsis"></i></button>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

@@ -1,0 +1,14 @@
+<!-- @dsCard group="Forms" height=140 subtitle="Text field with label, hint and error" -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;padding:24px;background:var(--surface)">
+  <div class="sh-field">
+    <label class="sh-field__label" for="pv-name">Customer name</label>
+    <input class="sh-input" id="pv-name" placeholder="María López">
+    <span class="sh-field__hint">As it appears on their card.</span>
+  </div>
+  <div class="sh-field sh-field--error">
+    <label class="sh-field__label" for="pv-phone">Phone</label>
+    <input class="sh-input" id="pv-phone" value="662 12" aria-invalid="true">
+    <span class="sh-field__hint">Enter a phone number with 10 digits.</span>
+  </div>
+</div>
+<script></script>

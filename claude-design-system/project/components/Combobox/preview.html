@@ -1,0 +1,14 @@
+<!-- @dsCard group="Forms" height=300 subtitle="Autocomplete: input with a filtered list" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <div class="sh-field" style="max-width:340px">
+    <label class="sh-field__label" for="pv-city">City</label>
+    <div class="sh-select-wrap sh-combobox"><input class="sh-input" id="pv-city" role="combobox" aria-expanded="true" value="h"></div>
+    <div class="sh-listbox" role="listbox" style="position:static;animation:none">
+      <div class="sh-listbox__option sh-listbox__option--active" role="option" aria-selected="true"><span class="sh-listbox__text">Hermosillo<span class="sh-listbox__hint">Sonora</span></span><i data-lucide="check"></i></div>
+      <div class="sh-listbox__option" role="option" aria-selected="false"><span class="sh-listbox__text">Ciudad Obregón</span></div>
+      <div class="sh-listbox__option" role="option" aria-selected="false"><span class="sh-listbox__text">Huatabampo</span></div>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

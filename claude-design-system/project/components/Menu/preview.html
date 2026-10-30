@@ -1,0 +1,15 @@
+<!-- @dsCard group="Overlays" height=270 subtitle="Dropdown list of actions" -->
+<div style="display:flex;flex-direction:column;gap:16px;padding:24px;background:var(--surface);font-family:var(--font-sans);">
+  <div style="display:flex;flex-direction:column;align-items:flex-start;gap:4px">
+    <button class="sh-icon-btn sh-icon-btn--secondary" aria-label="More actions" aria-expanded="true"><i data-lucide="ellipsis"></i></button>
+    <div class="sh-menu" role="menu" style="position:static;animation:none;width:240px">
+      <button class="sh-menu__item" role="menuitem"><i data-lucide="pencil"></i><span class="sh-menu__label">Edit customer</span><kbd class="sh-menu__shortcut">E</kbd></button>
+      <button class="sh-menu__item" role="menuitem" style="background:var(--surface-sunken)"><i data-lucide="download"></i><span class="sh-menu__label">Export CSV</span></button>
+      <button class="sh-menu__item" role="menuitem" disabled><i data-lucide="archive"></i><span class="sh-menu__label">Archive</span></button>
+      <div class="sh-menu__separator" role="separator"></div>
+      <button class="sh-menu__item sh-menu__item--danger" role="menuitem"><i data-lucide="trash-2"></i><span class="sh-menu__label">Delete customer</span></button>
+    </div>
+  </div>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

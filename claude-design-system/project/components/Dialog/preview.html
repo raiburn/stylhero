@@ -1,0 +1,16 @@
+<!-- @dsCard group="Overlays" height=260 subtitle="Modal confirmation" -->
+<div style="padding:24px;background:var(--surface-sunken)">
+  <dialog open class="sh-dialog" style="position:static;margin:0 auto" aria-labelledby="pv-dlg-title">
+    <div class="sh-dialog__header">
+      <h2 class="sh-dialog__title" id="pv-dlg-title">Delete this card?</h2>
+      <button class="sh-dialog__close" aria-label="Close"><i data-lucide="x"></i></button>
+    </div>
+    <div class="sh-dialog__body">María López will lose her 7 stamps. This can't be undone.</div>
+    <div class="sh-dialog__footer">
+      <button class="sh-btn sh-btn--secondary">Keep card</button>
+      <button class="sh-btn sh-btn--danger">Delete card</button>
+    </div>
+  </dialog>
+</div>
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>

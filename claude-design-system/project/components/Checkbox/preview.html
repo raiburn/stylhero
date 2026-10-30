@@ -1,0 +1,13 @@
+<!-- @dsCard group="Forms" height=150 subtitle="Checkbox and Radio" -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;padding:24px;background:var(--surface)">
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <label class="sh-check"><input type="checkbox" checked><span>Send SMS when a reward unlocks</span></label>
+    <label class="sh-check"><input type="checkbox"><span>Email monthly summary<span class="sh-check__hint">Sent on the 1st of each month.</span></span></label>
+    <label class="sh-check"><input type="checkbox" disabled><span>Push notifications (coming soon)</span></label>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:12px" role="radiogroup" aria-label="Stamps per visit">
+    <label class="sh-check"><input type="radio" name="pv-stamps" checked><span>1 stamp per visit</span></label>
+    <label class="sh-check"><input type="radio" name="pv-stamps"><span>1 stamp per $100 spent</span></label>
+  </div>
+</div>
+<script></script>
