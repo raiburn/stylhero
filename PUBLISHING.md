@@ -43,14 +43,14 @@ CHROME_PATH="/path/to/chrome" npm publish
 ## Releasing a new version
 
 1. Make sure `main` is clean and the tests pass (`cd ui && npm test`).
-2. Bump the version in `ui/package.json` and `ui/package-lock.json`:
+2. Bump the version and write the changelog with Changesets (each change should have added a changeset with `npm run changeset`):
    ```bash
    cd ui
-   npm version patch --no-git-tag-version   # bug fixes:            0.4.0 -> 0.4.1
-   npm version minor --no-git-tag-version   # new components/props: 0.4.0 -> 0.5.0
-   npm version major --no-git-tag-version   # breaking changes:     0.4.0 -> 1.0.0
+   npx changeset status        # what's pending
+   npm run version-packages    # bumps package.json, writes CHANGELOG.md, deletes the changesets
+   npm install                 # syncs package-lock.json to the new version
    ```
-   While the version is `0.x`, treat `minor` as possibly breaking. Note what changed in the changelog. (If the repo uses Changesets, let `npx changeset version` do this step instead.)
+   Tidy the new CHANGELOG entry into Added / Changed / Removed. While the version is `0.x`, a `minor` may be breaking: list those under "Changed".
 3. Commit, tag, publish and push:
    ```bash
    git commit -am "Stylhero vX.Y.Z"
