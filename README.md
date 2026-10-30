@@ -171,3 +171,7 @@ Tell Claude: *"use my Stylhero design system"* (or paste the link above). Claude
 4. Ask Claude to "sync Stylhero to the design system" to republish the Claude version.
 
 Adding a color: add it to `color.tokens` with a light and dark value. It becomes `var(--name)` in CSS and `bg-name` / `text-name` in Tailwind automatically. If it's a text/background pair, add it to `PAIRS` in `ui/scripts/build-tokens.mjs` so contrast is checked.
+
+## License
+
+[MIT](LICENSE) © 2026 Oscar Ruíz. Includes icons from [Lucide](https://lucide.dev) (ISC); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

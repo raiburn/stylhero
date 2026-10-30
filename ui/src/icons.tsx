@@ -1,4 +1,6 @@
 // A few Lucide icons (ISC license) inlined so the package has no icon dependency.
+// GitHubIcon and LinkedInIcon are brand marks (trademarks of their owners), used only to link to profiles.
+// See THIRD_PARTY_NOTICES.md for the Lucide license and trademark notes.
 import type { SVGProps } from "react";
 
 const base: SVGProps<SVGSVGElement> = {

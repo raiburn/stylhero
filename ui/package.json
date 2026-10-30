@@ -2,6 +2,27 @@
   "name": "@stylhero/ui",
   "version": "0.4.0",
   "description": "Stylhero design system: tokens, Tailwind theme and React components",
+  "license": "MIT",
+  "author": "Oscar Ruíz",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raiburn/stylhero.git",
+    "directory": "ui"
+  },
+  "homepage": "https://github.com/raiburn/stylhero#readme",
+  "bugs": {
+    "url": "https://github.com/raiburn/stylhero/issues"
+  },
+  "keywords": [
+    "react",
+    "nextjs",
+    "design-system",
+    "tailwindcss",
+    "components",
+    "ui",
+    "design-tokens",
+    "accessibility"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
@@ -21,7 +42,8 @@
   "files": [
     "dist",
     "styles",
-    "logo"
+    "logo",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "sideEffects": [
     "*.css"
