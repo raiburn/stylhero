@@ -1,3 +1,5 @@
+"use client";
+
 import type { AnchorHTMLAttributes } from "react";
 import { cn } from "../cn";
 import { useLinkComponent } from "../link";

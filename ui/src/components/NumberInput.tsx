@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef, useState } from "react";
 import { MinusIcon, PlusIcon } from "../icons";
 import { Field, useField, type FieldProps } from "./Field";

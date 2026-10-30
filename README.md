@@ -56,6 +56,19 @@ One set of styles, used in two places:
    </Card>
    ```
    With Tailwind you also get `bg-primary`, `text-ink`, `text-ink-muted`, `border-line`, `bg-surface-raised`, `font-display`, `shadow-card`, and so on.
+6. Recommended: in `next.config.ts`, let Next.js load only the components you import:
+   ```ts
+   const nextConfig: NextConfig = { experimental: { optimizePackageImports: ["@stylhero/ui"] } };
+   ```
+   Without it, every interactive component is sent to the browser as soon as one server component imports from `@stylhero/ui`. In the portfolio this took the home page from 156 kB to 113 kB of first-load JS.
+
+### Server components
+The package is built as one file per component, and only interactive components are marked `"use client"`. Presentational components render as React Server Components and send no JavaScript to the browser:
+- Text, Stack, Container, Grid, Divider, Paper, Box, ImageList, Masonry
+- Card, Badge, CountBadge, Avatar, Alert, Chip, Button, IconButton, ButtonGroup, EmptyState, Spinner, Skeleton, Progress, Stat, Timeline, Stepper, Table, Accordion, SkipLink
+- Input, Select, Switch and all icons
+
+Passing an event handler such as `onClick` or `onClose` still needs a `"use client"` file, as with any React component. Everything else is a client component: Link, AppBar, SideNav, Breadcrumbs, List, Menu, Tabs, Dialog, Drawer, Toast, Tooltip, Popover, Combobox, the date pickers, charts and DataGrid. They still work when imported from a server component.
 
 ### Icons (Lucide)
 ```bash

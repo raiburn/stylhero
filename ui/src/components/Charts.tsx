@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "../cn";
 

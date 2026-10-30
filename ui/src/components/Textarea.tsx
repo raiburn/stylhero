@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef, useLayoutEffect, useRef, type TextareaHTMLAttributes } from "react";
 import { useMergeRefs } from "@floating-ui/react";
 import { cn } from "../cn";

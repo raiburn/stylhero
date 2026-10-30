@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef, useId, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
 import { useDismiss, useFloating, useInteractions, useMergeRefs } from "@floating-ui/react";
 import { cn } from "../cn";

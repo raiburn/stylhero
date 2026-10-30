@@ -1,3 +1,5 @@
+"use client";
+
 import { useId, useRef, useState, type ReactNode } from "react";
 import {
   autoUpdate, flip, offset, size, useDismiss, useFloating, useInteractions, useListNavigation, useMergeRefs, useRole, FloatingPortal,

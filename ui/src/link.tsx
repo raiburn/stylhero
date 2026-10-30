@@ -1,3 +1,5 @@
+"use client";
+
 import { createContext, useContext, type ComponentType, type ReactNode } from "react";
 
 type LinkLike = ComponentType<{ href: string; className?: string; children?: ReactNode; [key: string]: unknown }> | "a";

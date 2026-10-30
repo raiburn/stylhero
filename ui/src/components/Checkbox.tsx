@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef, useEffect, useRef, type InputHTMLAttributes, type ReactNode } from "react";
 import { useMergeRefs } from "@floating-ui/react";
 import { cn } from "../cn";
