@@ -185,11 +185,6 @@ Tell Claude: *"use my Stylhero design system"* (or paste the link above). Claude
 
 Adding a color: add it to `color.tokens` with a light and dark value. It becomes `var(--name)` in CSS and `bg-name` / `text-name` in Tailwind automatically. If it's a text/background pair, add it to `PAIRS` in `ui/scripts/build-tokens.mjs` so contrast is checked.
 
-<<<<<<< HEAD
-## License
-
-[MIT](LICENSE) © 2026 Oscar Ruíz. Includes icons from [Lucide](https://lucide.dev) (ISC); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-=======
 ## Versioning
 
 `@stylhero/ui` follows [semantic versioning](https://semver.org). Every release is listed in [`ui/CHANGELOG.md`](ui/CHANGELOG.md).
@@ -204,4 +199,7 @@ npm run changeset      # pick patch/minor, write a one-line summary for users
 ```
 
 To cut a release (in `ui/`): `npx changeset status` shows what is pending, and `npm run version-packages` bumps `package.json` and writes the entries into `CHANGELOG.md`. Then tidy the new entry into Added / Changed / Removed and commit. Details are in `ui/.changeset/README.md`.
->>>>>>> changelog
+
+## License
+
+[MIT](LICENSE) © 2026 Oscar Ruíz. Includes icons from [Lucide](https://lucide.dev) (ISC); see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
