@@ -11,7 +11,13 @@ concurrency:
 
 jobs:
   check:
+    name: check (React ${{ matrix.react }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # the peer range is react >=18, so test the oldest supported major too
+        react: [18, 19]
     defaults:
       run:
         working-directory: ui
@@ -25,6 +31,10 @@ jobs:
           cache-dependency-path: ui/package-lock.json
 
       - run: npm ci
+
+      - name: Use React ${{ matrix.react }}
+        if: matrix.react != 19
+        run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.react }} @types/react-dom@${{ matrix.react }}
 
       - name: Typecheck
         run: npm run typecheck
@@ -45,7 +55,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: playground-screenshots
+          name: playground-screenshots-react-${{ matrix.react }}
           path: ui/playground/screenshots/
           if-no-files-found: ignore
 
