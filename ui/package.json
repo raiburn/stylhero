@@ -65,7 +65,7 @@
     "tokens:watch": "node --watch-path=../tokens.json scripts/build-tokens.mjs",
     "build": "npm run tokens && tsup && node scripts/fix-dist-imports.mjs",
     "dev": "tsup --watch --onSuccess \"node scripts/fix-dist-imports.mjs\"",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc -p playground",
     "playground": "node playground/build.mjs",
     "test": "node playground/build.mjs --no-open && node playground/test.mjs",
     "changeset": "changeset",
