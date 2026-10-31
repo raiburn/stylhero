@@ -82,6 +82,7 @@ await stars[4].click(); await wait(30);
 await page.keyboard.press("ArrowLeft"); await wait(30);
 const ev = await events();
 check("Rating click and arrow keys", ev.includes("rating:5") && ev.includes("rating:4"), ev.filter((e) => e.startsWith("rating")).join(","));
+check("Rating passes HTML attributes to its root", await page.$eval("#rating", (e) => e.matches(".sh-rating[role=radiogroup]")).catch(() => false));
 
 // Chips
 await page.click('.sh-chip__remove[aria-label="Remove Coffee"]'); await wait(30);

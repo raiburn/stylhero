@@ -1,10 +1,10 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, type HTMLAttributes } from "react";
 import { cn } from "../cn";
 import { StarIcon } from "../icons";
 
-export type RatingProps = {
+export type RatingProps = Omit<HTMLAttributes<HTMLElement>, "defaultValue"> & {
   value?: number;
   defaultValue?: number;
   onValueChange?: (value: number) => void;
@@ -15,11 +15,10 @@ export type RatingProps = {
   label?: string;
   name?: string;
   size?: "sm" | "md";
-  className?: string;
 };
 
 /** Star rating. The interactive version is a radio group, so arrow keys work. */
-export function Rating({ value, defaultValue = 0, onValueChange, max = 5, readOnly, label = "Rating", name, size = "md", className }: RatingProps) {
+export function Rating({ value, defaultValue = 0, onValueChange, max = 5, readOnly, label = "Rating", name, size = "md", className, onMouseLeave, ...props }: RatingProps) {
   const [internal, setInternal] = useState(defaultValue);
   const [hover, setHover] = useState<number | null>(null);
   const current = value ?? internal;
@@ -29,7 +28,7 @@ export function Rating({ value, defaultValue = 0, onValueChange, max = 5, readOn
 
   if (readOnly) {
     return (
-      <span className={classes} role="img" aria-label={`${current} out of ${max}`}>
+      <span className={classes} role="img" aria-label={`${current} out of ${max}`} onMouseLeave={onMouseLeave} {...props}>
         {stars.map((n) => (
           <span key={n} className={cn("sh-rating__star", n <= current && "sh-rating__star--on")}><StarIcon /></span>
         ))}
@@ -37,7 +36,7 @@ export function Rating({ value, defaultValue = 0, onValueChange, max = 5, readOn
     );
   }
   return (
-    <div className={classes} role="radiogroup" aria-label={label} onMouseLeave={() => setHover(null)}>
+    <div className={classes} role="radiogroup" aria-label={label} onMouseLeave={(e) => { setHover(null); onMouseLeave?.(e); }} {...props}>
       {stars.map((n) => (
         <label key={n} className={cn("sh-rating__star", n <= (hover ?? current) && "sh-rating__star--on")} onMouseEnter={() => setHover(n)}>
           <input

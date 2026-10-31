@@ -161,7 +161,7 @@ Then use `<Providers>{children}</Providers>` in `app/layout.tsx`.
 In `ui/`:
 ```bash
 npm run playground   # builds and opens a page with every component (light/dark follows your OS)
-npm test             # opens it in headless Chrome and checks 68 behaviors: menus, keyboard, dialogs, combobox, date pickers, data grid, tree view, charts...
+npm test             # opens it in headless Chrome and checks 69 behaviors: menus, keyboard, dialogs, combobox, date pickers, data grid, tree view, charts...
 ```
 `npm test` saves screenshots to `ui/playground/screenshots/`. Run it after changing components.
 
