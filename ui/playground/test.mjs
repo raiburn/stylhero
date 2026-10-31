@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 import { mkdirSync } from "node:fs";
 
 const url = "file:///" + fileURLToPath(new URL("./index.html", import.meta.url)).replace(/\\/g, "/");
-const browser = await puppeteer.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--allow-file-access-from-files"] });
+const browser = await puppeteer.launch({ executablePath: process.env.CHROME_PATH ?? "C:/Program Files/Google/Chrome/Application/chrome.exe", headless: true, args: ["--allow-file-access-from-files", ...(process.env.CI ? ["--no-sandbox"] : [])] });
 const page = await browser.newPage();
 const errors = [];
 page.on("console", (m) => { if (m.type() === "error" || m.type() === "warning") errors.push(m.type() + ": " + m.text()); });
@@ -207,9 +207,15 @@ check("DatePicker returns focus to the field", (await page.evaluate(() => docume
 await page.click("#date"); await wait(100);
 await page.keyboard.press("PageDown"); await wait(40);
 const month2 = await text(".sh-date-popover .sh-calendar__title");
+check("Calendar keeps focus on a day after changing month", await page.evaluate(() => document.activeElement?.classList.contains("sh-calendar__day")));
 const sundayDisabled = await page.$$eval(".sh-date-popover .sh-calendar__grid tbody tr", (rows) => rows.every((r) => r.children[0].querySelector("button").disabled));
 await page.keyboard.press("Escape"); await wait(60);
 check("Calendar PageDown changes month; Sundays disabled; Esc closes", !!month2 && sundayDisabled && !(await page.$(".sh-date-popover")), month2);
+await page.click("#date"); await wait(100);
+await page.keyboard.press("Home"); await wait(40);
+const homeFocus = await page.evaluate(() => { const a = document.activeElement; return a?.classList.contains("sh-calendar__day") && !a.disabled ? a.getAttribute("aria-label") : null; });
+await page.keyboard.press("Escape"); await wait(60);
+check("Calendar keys skip disabled days instead of losing focus", !!homeFocus, homeFocus);
 
 // DateRangePicker preset
 await page.click("#range"); await wait(100);

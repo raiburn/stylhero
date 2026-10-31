@@ -49,7 +49,16 @@ export function Calendar(props: CalendarProps) {
   const single = !range ? (props.value as Date | null | undefined) ?? null : null;
   const [start, end] = range ? (props.value as DateRange | undefined) ?? [null, null] : [null, null];
   const today = day(new Date());
-  const [focus, setFocus] = useState<Date>(() => day(single ?? start ?? today));
+  const disabled = (d: Date) => (min && before(d, min)) || (max && before(max, d)) || !!isDateDisabled?.(d);
+  // disabled buttons can't take focus, so keyboard moves walk past them (as MUI X does)
+  const enabledFrom = (d: Date, dir: 1 | -1) => {
+    for (let i = 0; i < 366 && disabled(d); i++) d = addDays(d, dir);
+    return disabled(d) ? null : d;
+  };
+  const [focus, setFocus] = useState<Date>(() => {
+    const d = day(single ?? start ?? today);
+    return enabledFrom(d, 1) ?? enabledFrom(d, -1) ?? d;
+  });
   const [hover, setHover] = useState<Date | null>(null);
   const gridRef = useRef<HTMLTableElement>(null);
   const shouldFocus = useRef(!!autoFocus);
@@ -57,12 +66,12 @@ export function Calendar(props: CalendarProps) {
 
   useEffect(() => {
     if (!shouldFocus.current) return;
-    // runs on mount (autoFocus) and after keyboard moves
+    // runs on mount (autoFocus) and after keyboard moves. Not [tabindex="0"]: when a month change unmounts
+    // the focused day, floating-ui's focus manager sets every tabindex inside the popover to -1.
     shouldFocus.current = false;
-    gridRef.current?.querySelector<HTMLElement>('[tabindex="0"]')?.focus();
+    gridRef.current?.querySelector<HTMLElement>("[data-focus]")?.focus();
   }, [focus]);
 
-  const disabled = (d: Date) => (min && before(d, min)) || (max && before(max, d)) || !!isDateDisabled?.(d);
   const first = new Date(focus.getFullYear(), focus.getMonth(), 1);
   const lead = (first.getDay() - weekStartsOn + 7) % 7;
   const gridStart = addDays(first, -lead);
@@ -88,7 +97,12 @@ export function Calendar(props: CalendarProps) {
       k === "ArrowUp" ? addDays(focus, -7) : k === "ArrowDown" ? addDays(focus, 7) :
       k === "Home" ? addDays(focus, -dow) : k === "End" ? addDays(focus, 6 - dow) :
       k === "PageUp" ? addMonths(focus, e.shiftKey ? -12 : -1) : k === "PageDown" ? addMonths(focus, e.shiftKey ? 12 : 1) : null;
-    if (to) { e.preventDefault(); move(to); return; }
+    if (to) {
+      e.preventDefault();
+      const next = enabledFrom(to, before(to, focus) ? -1 : 1);
+      if (next) move(next);
+      return;
+    }
     if (k === "Enter" || k === " ") { e.preventDefault(); pick(focus); }
   };
 
@@ -132,6 +146,7 @@ export function Calendar(props: CalendarProps) {
                     <button
                       type="button"
                       tabIndex={same(d, focus) ? 0 : -1}
+                      data-focus={same(d, focus) || undefined}
                       aria-label={fmtFull.format(d)}
                       aria-current={same(d, today) ? "date" : undefined}
                       aria-pressed={isSel}
