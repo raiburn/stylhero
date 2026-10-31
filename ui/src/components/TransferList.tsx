@@ -1,20 +1,19 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../cn";
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
 import { Checkbox } from "./Checkbox";
 
 export type TransferItem = { value: string; label: ReactNode };
 
-export type TransferListProps = {
+export type TransferListProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> & {
   /** Every item; the ones in `value` show on the right. */
   items: TransferItem[];
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
   titles?: [ReactNode, ReactNode];
-  className?: string;
 };
 
 function Pane({ title, items, checked, toggle, setAll }: {
@@ -42,7 +41,7 @@ function Pane({ title, items, checked, toggle, setAll }: {
 }
 
 /** Move items between two lists, e.g. which products earn stamps. */
-export function TransferList({ items, value, defaultValue = [], onValueChange, titles = ["Available", "Chosen"], className }: TransferListProps) {
+export function TransferList({ items, value, defaultValue = [], onValueChange, titles = ["Available", "Chosen"], className, ...props }: TransferListProps) {
   const [internal, setInternal] = useState(defaultValue);
   const chosen = value ?? internal;
   const [checked, setChecked] = useState<string[]>([]);
@@ -59,7 +58,7 @@ export function TransferList({ items, value, defaultValue = [], onValueChange, t
   const rightChecked = right.filter((i) => checked.includes(i.value)).map((i) => i.value);
 
   return (
-    <div className={cn("sh-transfer", className)}>
+    <div className={cn("sh-transfer", className)} {...props}>
       <Pane title={titles[0]} items={left} checked={checked} toggle={toggle} setAll={setAll(left)} />
       <div className="sh-transfer__moves">
         <button type="button" className="sh-icon-btn sh-icon-btn--secondary sh-icon-btn--sm" aria-label="Move selected right" disabled={!leftChecked.length}

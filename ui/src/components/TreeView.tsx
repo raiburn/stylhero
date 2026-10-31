@@ -1,12 +1,12 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "../cn";
 import { ChevronRightIcon } from "../icons";
 
 export type TreeItem = { id: string; label: ReactNode; icon?: ReactNode; children?: TreeItem[]; disabled?: boolean };
 
-export type TreeViewProps = {
+export type TreeViewProps = Omit<HTMLAttributes<HTMLUListElement>, "onSelect"> & {
   items: TreeItem[];
   /** Controlled expanded ids. */
   expanded?: string[];
@@ -17,13 +17,12 @@ export type TreeViewProps = {
   onSelect?: (id: string) => void;
   /** Accessible name. */
   label?: string;
-  className?: string;
 };
 
 type Flat = { item: TreeItem; depth: number; parent: string | null };
 
 /** Nested, collapsible list: folders, categories, branches → stores (MUI X's Tree View). Full arrow-key support. */
-export function TreeView({ items, expanded: expProp, defaultExpanded = [], onExpandedChange, selected: selProp, defaultSelected = null, onSelect, label, className }: TreeViewProps) {
+export function TreeView({ items, expanded: expProp, defaultExpanded = [], onExpandedChange, selected: selProp, defaultSelected = null, onSelect, label, className, ...props }: TreeViewProps) {
   const [expInternal, setExpInternal] = useState(defaultExpanded);
   const expanded = expProp ?? expInternal;
   const [selInternal, setSelInternal] = useState(defaultSelected);
@@ -106,7 +105,7 @@ export function TreeView({ items, expanded: expProp, defaultExpanded = [], onExp
     });
 
   return (
-    <ul role="tree" aria-label={label} className={cn("sh-tree", className)}>
+    <ul role="tree" aria-label={label} className={cn("sh-tree", className)} {...props}>
       {render(items, 0)}
     </ul>
   );

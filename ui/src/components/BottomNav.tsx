@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 import { useLinkComponent } from "../link";
 
@@ -14,21 +14,20 @@ export type BottomNavItem = {
   badge?: number;
 };
 
-export type BottomNavProps = {
+export type BottomNavProps = HTMLAttributes<HTMLElement> & {
   items: BottomNavItem[];
   /** Hide labels except on the active item (MUI's showLabels={false}). */
   compact?: boolean;
   /** Pins it to the bottom of the screen, above the iPhone home bar. */
   fixed?: boolean;
   label?: string;
-  className?: string;
 };
 
 /** Phone tab bar: 3 to 5 top-level destinations. */
-export function BottomNav({ items, compact, fixed, label = "Main", className }: BottomNavProps) {
+export function BottomNav({ items, compact, fixed, label = "Main", className, ...props }: BottomNavProps) {
   const LinkComp = useLinkComponent();
   return (
-    <nav aria-label={label} className={cn("sh-bottom-nav", fixed && "sh-bottom-nav--fixed", compact && "sh-bottom-nav--compact", className)}>
+    <nav aria-label={label} className={cn("sh-bottom-nav", fixed && "sh-bottom-nav--fixed", compact && "sh-bottom-nav--compact", className)} {...props}>
       {items.map((it) => {
         const body = (
           <>

@@ -52,7 +52,7 @@ function App() {
             <S.Card><S.Stat label="Visits this week" value="1,284" change="+12%" hint="vs last week" /></S.Card>
             <S.Card><S.Stat label="Avg. wait" value="3m 10s" change="-8%" invert hint="faster" /></S.Card>
             <S.Card><S.Stat label="Rewards redeemed" value="96" change="-4%" /></S.Card>
-            <S.Card><S.Stack direction="row" gap={4} align="center"><S.ProgressCircle value={7} max={10} label="Stamps">7/10</S.ProgressCircle><S.Text variant="small" tone="muted">stamps to next reward</S.Text></S.Stack></S.Card>
+            <S.Card><S.Stack direction="row" gap={4} align="center"><S.ProgressCircle value={7} max={10} label="Stamps" data-attrs="ring" style={{ flexShrink: 0 }}>7/10</S.ProgressCircle><S.Text variant="small" tone="muted">stamps to next reward</S.Text></S.Stack></S.Card>
           </S.Grid>
 
           <S.Grid minChildWidth={320} gap={6}>
@@ -62,14 +62,14 @@ function App() {
               <S.Slider label="Stamps per visit" showValue defaultValue={2} min={1} max={5} />
               <S.Stack direction="row" gap={2} wrap>
                 {chips.map((c) => <S.Chip key={c} onRemove={() => setChips(chips.filter((x) => x !== c))}>{c}</S.Chip>)}
-                <S.Chip selected={filter} onClick={() => setFilter(!filter)}>Active only</S.Chip>
+                <S.Chip selected={filter} onClick={() => setFilter(!filter)} data-attrs="chip">Active only</S.Chip>
               </S.Stack>
               <S.Rating id="rating" defaultValue={3} label="Rate your visit" onValueChange={(v) => log("rating:" + v)} />
               <S.ButtonGroup><S.Button variant="secondary">Day</S.Button><S.Button variant="secondary">Week</S.Button><S.Button variant="secondary">Month</S.Button></S.ButtonGroup>
             </S.Card>
 
             <S.Card title="Progress">
-              <S.Stepper active={1} steps={[{ label: "Account" }, { label: "Business" }, { label: "Cards" }]} />
+              <S.Stepper data-attrs="stepper" active={1} steps={[{ label: "Account" }, { label: "Business" }, { label: "Cards" }]} />
               <S.Progress label="Uploading" value={40} valueText />
               <S.Progress label="Syncing" />
               <S.Skeleton lines={3} />
@@ -98,7 +98,7 @@ function App() {
             </S.Card>
 
             <S.Card title="Tabs & table">
-              <S.Tabs label="Period" items={[
+              <S.Tabs data-attrs="tabs" label="Period" items={[
                 { id: "t1", label: "Today", content: <S.Text variant="small">12 visits today.</S.Text> },
                 { id: "t2", label: "Week", content: <S.Text variant="small">84 visits this week.</S.Text> },
                 { id: "t3", label: "Month", content: <S.Text variant="small">310 visits this month.</S.Text> },
@@ -111,7 +111,7 @@ function App() {
       </S.Container>
       <MoreComponents />
 
-      <S.Dialog open={dialog} onClose={() => setDialog(false)} title="Delete customer?" footer={<><S.Button variant="secondary" onClick={() => setDialog(false)}>Cancel</S.Button><S.Button variant="danger" onClick={() => setDialog(false)}>Delete</S.Button></>}>
+      <S.Dialog data-attrs="dialog" onClick={() => log("dialog-click")} open={dialog} onClose={() => setDialog(false)} title="Delete customer?" footer={<><S.Button variant="secondary" onClick={() => setDialog(false)}>Cancel</S.Button><S.Button variant="danger" onClick={() => setDialog(false)}>Delete</S.Button></>}>
         Ana Ruiz and her 8 stamps will be removed.
       </S.Dialog>
       <S.Drawer open={drawer} onClose={() => setDrawer(false)} title="Menu" side="left">

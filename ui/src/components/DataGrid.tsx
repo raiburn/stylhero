@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useMemo, useState, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../cn";
 import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon, SearchIcon } from "../icons";
 import { Button } from "./Button";
@@ -29,7 +29,7 @@ export type GridColumn<T> = {
 
 export type SortState = { field: string; direction: "asc" | "desc" } | null;
 
-export type DataGridProps<T> = {
+export type DataGridProps<T> = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   rows: T[];
   columns: GridColumn<T>[];
   /** Defaults to row.id. */
@@ -58,7 +58,6 @@ export type DataGridProps<T> = {
   maxHeight?: number | string;
   /** Accessible name. */
   label?: string;
-  className?: string;
 };
 
 const valueOf = <T,>(row: T, c: GridColumn<T>) => (c.getValue ? c.getValue(row) : (row as Record<string, unknown>)[c.field]);
@@ -78,7 +77,7 @@ const compare = (a: unknown, b: unknown) => {
 export function DataGrid<T>({
   rows, columns, getRowId = (r) => String((r as { id: unknown }).id), search, checkboxSelection, selection, onSelectionChange,
   defaultSort = null, pageSize: pageSizeProp = 10, pageSizeOptions = [10, 25, 50], columnsButton, exportFileName, actions,
-  onRowClick, density = "standard", loading, emptyText = "No rows", maxHeight, label, className,
+  onRowClick, density = "standard", loading, emptyText = "No rows", maxHeight, label, className, ...props
 }: DataGridProps<T>) {
   const [sort, setSort] = useState<SortState>(defaultSort);
   const [query, setQuery] = useState("");
@@ -126,7 +125,7 @@ export function DataGrid<T>({
   const toolbar = search || columnsButton || exportFileName || actions || (checkboxSelection && selected.length > 0);
 
   return (
-    <div className={cn("sh-grid-table", `sh-grid-table--${density}`, className)}>
+    <div className={cn("sh-grid-table", `sh-grid-table--${density}`, className)} {...props}>
       {toolbar && (
         <div className="sh-grid-table__toolbar">
           {search && (

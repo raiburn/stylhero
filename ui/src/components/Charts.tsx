@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, type HTMLAttributes, type ReactNode, type SVGAttributes } from "react";
 import { cn } from "../cn";
 
 // Colors come from tokens chart-1..8 (validated for color-blind separation). Slots are assigned in order and never cycled.
@@ -40,22 +40,24 @@ function niceScale(lo: number, hi: number, count = 5) {
   return { min, max, ticks };
 }
 
-type FrameProps = {
+/** HTML attributes every chart passes to its <figure>; `title` is the chart's own heading. */
+type ChartAttrs = Omit<HTMLAttributes<HTMLElement>, "title">;
+
+type FrameProps = ChartAttrs & {
   title?: ReactNode;
   subtitle?: ReactNode;
   legend?: Array<{ name: string; color: string; value?: string }>;
   table: { head: string[]; rows: Array<Array<string>> };
   children: ReactNode;
-  className?: string;
   /** Screen-reader summary of what the chart shows. */
   description?: string;
 };
 
-function ChartFrame({ title, subtitle, legend, table, children, className, description }: FrameProps) {
+function ChartFrame({ title, subtitle, legend, table, children, className, description, ...props }: FrameProps) {
   const [showTable, setShowTable] = useState(false);
   const id = useId();
   return (
-    <figure className={cn("sh-chart", className)} aria-labelledby={title ? `${id}-t` : undefined}>
+    <figure className={cn("sh-chart", className)} aria-labelledby={title ? `${id}-t` : undefined} {...props}>
       {(title || subtitle) && (
         <figcaption className="sh-chart__caption">
           {title && <span id={`${id}-t`} className="sh-chart__title">{title}</span>}
@@ -112,7 +114,7 @@ function TipRows({ title, rows }: { title: ReactNode; rows: Array<{ name: string
   );
 }
 
-type CartesianProps = {
+type CartesianProps = ChartAttrs & {
   /** X-axis categories, e.g. ["Mon", "Tue", ...]. */
   labels: string[];
   /** Up to 8 series. More than that should be grouped into "Other" before charting. */
@@ -122,7 +124,6 @@ type CartesianProps = {
   height?: number;
   valueFormat?: Fmt;
   description?: string;
-  className?: string;
 };
 
 const tableOf = (labels: string[], series: ChartSeries[], fmt: Fmt) => ({
@@ -163,7 +164,7 @@ function barPath(x: number, w: number, yTop: number, yBase: number) {
 export type BarChartProps = CartesianProps & { stacked?: boolean };
 
 /** Compare amounts across categories (MUI X's BarChart). Hover a column for exact values. */
-export function BarChart({ labels, series: all, title, subtitle, height = 260, valueFormat = defaultFmt, stacked, description, className }: BarChartProps) {
+export function BarChart({ labels, series: all, title, subtitle, height = 260, valueFormat = defaultFmt, stacked, description, className, ...props }: BarChartProps) {
   const series = all.slice(0, MAX_SERIES);
   const [ref, width] = useWidth<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
@@ -179,7 +180,7 @@ export function BarChart({ labels, series: all, title, subtitle, height = 260, v
   const xAt = (i: number) => left + band * i + band / 2;
 
   return (
-    <ChartFrame title={title} subtitle={subtitle} description={description} className={className}
+    <ChartFrame title={title} subtitle={subtitle} description={description} className={className} {...props}
       legend={series.map((s, i) => ({ name: s.name, color: color(i) }))} table={tableOf(labels, series, valueFormat)}>
       <div ref={ref} className="sh-chart__canvas" onMouseLeave={() => setHover(null)}>
         <svg width={width} height={height}>
@@ -239,7 +240,7 @@ function linePath(pts: Array<[number, number]>, curved?: boolean) {
 }
 
 /** Change over time (MUI X's LineChart). Hover anywhere for a crosshair with every series' value. */
-export function LineChart({ labels, series: all, title, subtitle, height = 260, valueFormat = defaultFmt, area, curved, description, className }: LineChartProps) {
+export function LineChart({ labels, series: all, title, subtitle, height = 260, valueFormat = defaultFmt, area, curved, description, className, ...props }: LineChartProps) {
   const series = all.slice(0, MAX_SERIES);
   const [ref, width] = useWidth<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
@@ -252,7 +253,7 @@ export function LineChart({ labels, series: all, title, subtitle, height = 260, 
   const base = y(Math.max(0, min));
 
   return (
-    <ChartFrame title={title} subtitle={subtitle} description={description} className={className}
+    <ChartFrame title={title} subtitle={subtitle} description={description} className={className} {...props}
       legend={series.map((s, i) => ({ name: s.name, color: color(i) }))} table={tableOf(labels, series, valueFormat)}>
       <div
         ref={ref}
@@ -293,7 +294,7 @@ export function LineChart({ labels, series: all, title, subtitle, height = 260, 
 }
 
 export type ScatterSeries = { name: string; data: Array<{ x: number; y: number; label?: string }> };
-export type ScatterChartProps = {
+export type ScatterChartProps = ChartAttrs & {
   /** Keep it to 3 series or fewer: past that, colors get hard to tell apart when points mix. */
   series: ScatterSeries[];
   xLabel?: string;
@@ -304,11 +305,10 @@ export type ScatterChartProps = {
   xFormat?: Fmt;
   yFormat?: Fmt;
   description?: string;
-  className?: string;
 };
 
 /** Relationship between two measures (MUI X's ScatterChart). */
-export function ScatterChart({ series: all, xLabel = "x", yLabel = "y", title, subtitle, height = 280, xFormat = defaultFmt, yFormat = defaultFmt, description, className }: ScatterChartProps) {
+export function ScatterChart({ series: all, xLabel = "x", yLabel = "y", title, subtitle, height = 280, xFormat = defaultFmt, yFormat = defaultFmt, description, className, ...props }: ScatterChartProps) {
   const series = all.slice(0, 3);
   const [ref, width] = useWidth<HTMLDivElement>();
   const [hover, setHover] = useState<[number, number] | null>(null);
@@ -321,7 +321,7 @@ export function ScatterChart({ series: all, xLabel = "x", yLabel = "y", title, s
   const y = (v: number) => bottom - ((v - sy.min) / (sy.max - sy.min)) * (bottom - top);
   const hp = hover && series[hover[0]].data[hover[1]];
   return (
-    <ChartFrame title={title} subtitle={subtitle} description={description} className={className}
+    <ChartFrame title={title} subtitle={subtitle} description={description} className={className} {...props}
       legend={series.map((s, i) => ({ name: s.name, color: color(i) }))}
       table={{ head: ["Series", xLabel, yLabel], rows: series.flatMap((s) => s.data.map((p) => [p.label ? `${s.name}: ${p.label}` : s.name, xFormat(p.x), yFormat(p.y)])) }}>
       <div ref={ref} className="sh-chart__canvas" onMouseLeave={() => setHover(null)}>
@@ -354,7 +354,7 @@ export function ScatterChart({ series: all, xLabel = "x", yLabel = "y", title, s
 }
 
 export type PieSlice = { label: string; value: number };
-export type PieChartProps = {
+export type PieChartProps = ChartAttrs & {
   /** Up to 8 slices; anything past the 7 largest is grouped into "Other". */
   data: PieSlice[];
   /** Hole in the middle (0 = pie). */
@@ -366,11 +366,10 @@ export type PieChartProps = {
   size?: number;
   valueFormat?: Fmt;
   description?: string;
-  className?: string;
 };
 
 /** Parts of a whole (MUI X's PieChart). Best with 2 to 5 slices. */
-export function PieChart({ data, donut = true, centerLabel, title, subtitle, size = 200, valueFormat = defaultFmt, description, className }: PieChartProps) {
+export function PieChart({ data, donut = true, centerLabel, title, subtitle, size = 200, valueFormat = defaultFmt, description, className, ...props }: PieChartProps) {
   const [hover, setHover] = useState<number | null>(null);
   const sorted = [...data].sort((a, b) => b.value - a.value);
   const slices = sorted.length > MAX_SERIES
@@ -396,7 +395,7 @@ export function PieChart({ data, donut = true, centerLabel, title, subtitle, siz
     return { d, mid };
   });
   return (
-    <ChartFrame title={title} subtitle={subtitle} description={description} className={cn("sh-chart--pie", className)}
+    <ChartFrame title={title} subtitle={subtitle} description={description} className={cn("sh-chart--pie", className)} {...props}
       table={{ head: ["", "Value", "Share"], rows: slices.map((s) => [s.label, valueFormat(s.value), pct(s.value)]) }}>
       <div className="sh-pie">
         <div className="sh-pie__canvas" style={{ width: size, height: size }} onMouseLeave={() => setHover(null)}>
@@ -430,18 +429,17 @@ export function PieChart({ data, donut = true, centerLabel, title, subtitle, siz
   );
 }
 
-export type SparklineProps = {
+export type SparklineProps = Omit<SVGAttributes<SVGSVGElement>, "width" | "height"> & {
   data: number[];
   /** Accessible summary, e.g. "Visits, last 14 days, up 12%". */
   label: string;
   width?: number;
   height?: number;
   area?: boolean;
-  className?: string;
 };
 
 /** Tiny trend line with no axes, for tables and stat tiles (MUI X's SparkLineChart). */
-export function Sparkline({ data, label, width = 120, height = 32, area = true, className }: SparklineProps) {
+export function Sparkline({ data, label, width = 120, height = 32, area = true, className, ...props }: SparklineProps) {
   if (data.length < 2) return null;
   const lo = Math.min(...data), hi = Math.max(...data);
   const pad = 4;
@@ -449,7 +447,7 @@ export function Sparkline({ data, label, width = 120, height = 32, area = true, 
   const y = (v: number) => height - pad - ((v - lo) / (hi - lo || 1)) * (height - pad * 2);
   const d = data.map((v, i) => `${i ? "L" : "M"}${x(i)},${y(v)}`).join("");
   return (
-    <svg className={cn("sh-sparkline", className)} width={width} height={height} role="img" aria-label={label}>
+    <svg className={cn("sh-sparkline", className)} width={width} height={height} role="img" aria-label={label} {...props}>
       {area && <path d={`${d}L${x(data.length - 1)},${height}L${x(0)},${height}Z`} fill="var(--chart-1)" opacity={0.1} />}
       <path d={d} fill="none" stroke="var(--chart-1)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
       <circle cx={x(data.length - 1)} cy={y(data[data.length - 1])} r={3} fill="var(--chart-1)" className="sh-chart__dot" />
@@ -457,7 +455,7 @@ export function Sparkline({ data, label, width = 120, height = 32, area = true, 
   );
 }
 
-export type GaugeProps = {
+export type GaugeProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   value: number;
   max?: number;
   /** Text under the number, e.g. "of monthly goal". */
@@ -465,11 +463,10 @@ export type GaugeProps = {
   /** Text in the middle; defaults to the percentage. */
   valueText?: ReactNode;
   size?: number;
-  className?: string;
 };
 
 /** One number against a goal, as a half ring (MUI X's Gauge). */
-export function Gauge({ value, max = 100, label, valueText, size = 180, className }: GaugeProps) {
+export function Gauge({ value, max = 100, label, valueText, size = 180, className, style, ...props }: GaugeProps) {
   const pct = Math.min(1, Math.max(0, value / max));
   const sw = size * 0.09, r = (size - sw) / 2, cx = size / 2, cy = size / 2;
   const arc = (to: number) => {
@@ -477,8 +474,8 @@ export function Gauge({ value, max = 100, label, valueText, size = 180, classNam
     return `M${cx - r},${cy}A${r},${r} 0 0 1 ${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`;
   };
   return (
-    <div className={cn("sh-gauge", className)} style={{ width: size }} role="meter" aria-valuemin={0} aria-valuemax={max} aria-valuenow={value}
-      aria-label={typeof label === "string" ? label : undefined}>
+    <div className={cn("sh-gauge", className)} style={{ width: size, ...style }} role="meter" aria-valuemin={0} aria-valuemax={max} aria-valuenow={value}
+      aria-label={typeof label === "string" ? label : undefined} {...props}>
       <svg width={size} height={size / 2 + sw / 2} aria-hidden="true">
         <path d={arc(1)} fill="none" stroke="var(--line)" strokeWidth={sw} strokeLinecap="round" />
         {pct > 0 && <path d={arc(pct)} fill="none" stroke="var(--primary)" strokeWidth={sw} strokeLinecap="round" />}

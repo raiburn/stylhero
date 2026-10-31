@@ -106,6 +106,10 @@ Dark mode follows the OS. Force a theme with `<html data-theme="dark">` or `data
 | Feedback | Alert (`onClose`, `action`, `outlined`/`filled`), Spinner, Progress, ProgressCircle, Skeleton | Alert, CircularProgress, LinearProgress, Skeleton |
 | Motion & utilities | Transition, Fade, Grow, Zoom, Slide, Collapse, Portal, NoSsr, ClickAwayListener, `useClickAway`, `useMediaQuery`, `base.css` | Transitions, Portal, NoSsr, ClickAwayListener, useMediaQuery, CssBaseline |
 
+Components that render their own element also take that element's HTML attributes (`id`, `style`, `data-*`, `aria-*`, event handlers…) and put them on it, as `<Button>` does. Your `className` and `style` are added to the component's own, and handlers it uses internally (like Dialog's backdrop click) run alongside yours. Two kinds don't:
+- Tooltip, Popover, Menu and the transitions wrap the element you pass them, so put attributes on that element.
+- Combobox, NumberInput and the date and time pickers take `id`, `name`, `disabled` and `className`, which go to the form control and field.
+
 Left out on purpose:
 - `sx`, `styled()` and theme objects. Use `tokens.json`, Tailwind or the `sh-` classes instead.
 - Material Icons. Use Lucide instead.
@@ -161,7 +165,7 @@ Then use `<Providers>{children}</Providers>` in `app/layout.tsx`.
 In `ui/`:
 ```bash
 npm run playground   # builds and opens a page with every component (light/dark follows your OS)
-npm test             # opens it in headless Chrome and checks 69 behaviors: menus, keyboard, dialogs, combobox, date pickers, data grid, tree view, charts...
+npm test             # opens it in headless Chrome and checks 72 behaviors: menus, keyboard, dialogs, combobox, date pickers, data grid, tree view, charts...
 ```
 `npm test` saves screenshots to `ui/playground/screenshots/`. Run it after changing components.
 

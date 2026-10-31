@@ -118,6 +118,14 @@ await page.click(".sh-accordion__item:nth-child(2) summary"); await wait(50);
 const openState = await page.$$eval(".sh-accordion__item", (d) => d.map((x) => x.open).join());
 check("Accordion single keeps one open", openState === "false,true", openState);
 
+// HTML attributes reach each component's root element
+const roots = await page.$$eval("[data-attrs]", (els) => Object.fromEntries(els.map((e) => [e.dataset.attrs, `${e.tagName.toLowerCase()}.${e.getAttribute("class")}`])));
+const want = { chip: "span.sh-chip", ring: "div.sh-ring", stepper: "ol.sh-stepper", tabs: "div.sh-tabs", dialog: "dialog.sh-dialog", chart: "figure.sh-chart", sparkline: "svg.sh-sparkline", grid: "div.sh-grid-table" };
+const wrong = Object.entries(want).filter(([k, v]) => !roots[k]?.startsWith(v)).map(([k]) => `${k}=${roots[k] ?? "missing"}`);
+check("HTML attributes reach the root of Chip, ProgressCircle, Stepper, Tabs, Dialog, charts and DataGrid", !wrong.length, wrong.join(" "));
+const ringStyle = await page.$eval('[data-attrs="ring"]', (e) => `${e.style.width} ${e.style.flexShrink}`);
+check("A caller's style merges with the component's own", ringStyle === "64px 0", ringStyle);
+
 // Dialog (existing component)
 await page.click("#open-dialog"); await wait(100);
 check("Dialog opens as modal", await page.$eval(".sh-dialog", (d) => d.open && d.matches(":modal")));
@@ -127,6 +135,7 @@ check("Dialog Esc closes", !(await page.$eval(".sh-dialog", (d) => d.open)));
 await page.click("#open-dialog"); await wait(100);
 await page.mouse.click(10, 10); await wait(80);
 check("Dialog backdrop click closes", !(await page.$eval(".sh-dialog", (d) => d.open)));
+check("Dialog runs a caller's onClick and still closes on backdrop click", (await events()).includes("dialog-click"));
 await page.click("#open-dialog"); await wait(100);
 await page.mouse.click(640, 450); await wait(80);
 check("Dialog click inside stays open", await page.$eval(".sh-dialog", (d) => d.open));

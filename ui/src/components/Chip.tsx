@@ -1,8 +1,8 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 import { CheckIcon, XIcon } from "../icons";
 
-export type ChipProps = {
+export type ChipProps = Omit<HTMLAttributes<HTMLSpanElement>, "onClick"> & {
   children: ReactNode;
   /** With onClick: a filter chip that shows a check when selected. */
   selected?: boolean;
@@ -10,11 +10,10 @@ export type ChipProps = {
   /** Shows a remove (x) button. */
   onRemove?: () => void;
   icon?: ReactNode;
-  className?: string;
 };
 
 /** Compact pill for filters, tags and selected values. */
-export function Chip({ children, selected, onClick, onRemove, icon, className }: ChipProps) {
+export function Chip({ children, selected, onClick, onRemove, icon, className, ...props }: ChipProps) {
   const content = (
     <>
       {selected ? <CheckIcon /> : icon}
@@ -22,7 +21,7 @@ export function Chip({ children, selected, onClick, onRemove, icon, className }:
     </>
   );
   return (
-    <span className={cn("sh-chip", selected && "sh-chip--selected", className)}>
+    <span className={cn("sh-chip", selected && "sh-chip--selected", className)} {...props}>
       {onClick ? (
         <button type="button" className="sh-chip__main" aria-pressed={selected} onClick={onClick}>{content}</button>
       ) : (

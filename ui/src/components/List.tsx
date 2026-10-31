@@ -29,7 +29,7 @@ export function List({ subheader, plain, dense, className, children, ...props }:
   );
 }
 
-export type ListItemProps = {
+export type ListItemProps = Omit<HTMLAttributes<HTMLLIElement>, "title" | "onClick"> & {
   title: ReactNode;
   description?: ReactNode;
   /** Left side: an Avatar, icon or Checkbox. */
@@ -42,10 +42,9 @@ export type ListItemProps = {
   /** Highlights the row (e.g. the open conversation). */
   selected?: boolean;
   disabled?: boolean;
-  className?: string;
 };
 
-export function ListItem({ title, description, leading, trailing, href, onClick, selected, disabled, className }: ListItemProps) {
+export function ListItem({ title, description, leading, trailing, href, onClick, selected, disabled, className, ...props }: ListItemProps) {
   const LinkComp = useLinkComponent();
   const body = (
     <>
@@ -59,7 +58,7 @@ export function ListItem({ title, description, leading, trailing, href, onClick,
   );
   const rowClass = cn("sh-list__row sh-list__row--action", selected && "sh-list__row--selected");
   return (
-    <li className={cn("sh-list__item", className)}>
+    <li className={cn("sh-list__item", className)} {...props}>
       {href && !disabled ? (
         <LinkComp href={href} className={rowClass} aria-current={selected ? "page" : undefined}>{body}</LinkComp>
       ) : onClick ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { forwardRef, useId, useRef, useState, type ButtonHTMLAttributes, type ReactNode } from "react";
+import { forwardRef, useId, useRef, useState, type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode } from "react";
 import { useDismiss, useFloating, useInteractions, useMergeRefs } from "@floating-ui/react";
 import { cn } from "../cn";
 import { PlusIcon, XIcon } from "../icons";
@@ -35,7 +35,7 @@ Fab.displayName = "Fab";
 
 export type SpeedDialAction = { label: string; icon: ReactNode; onClick: () => void };
 
-export type SpeedDialProps = {
+export type SpeedDialProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   /** Accessible name of the main button, e.g. "Quick actions". */
   label: string;
   actions: SpeedDialAction[];
@@ -44,11 +44,10 @@ export type SpeedDialProps = {
   /** Which way the actions fan out. */
   direction?: "up" | "left";
   fixed?: boolean;
-  className?: string;
 };
 
 /** A Fab that opens a few related actions, each with a visible label. */
-export function SpeedDial({ label, actions, icon, direction = "up", fixed, className }: SpeedDialProps) {
+export function SpeedDial({ label, actions, icon, direction = "up", fixed, className, onKeyDown, ...props }: SpeedDialProps) {
   const [open, setOpen] = useState(false);
   const listId = useId();
   const mainRef = useRef<HTMLButtonElement | null>(null);
@@ -62,7 +61,8 @@ export function SpeedDial({ label, actions, icon, direction = "up", fixed, class
       ref={refs.setFloating}
       className={cn("sh-speed-dial", `sh-speed-dial--${direction}`, open && "sh-speed-dial--open", fixed && "sh-fab--fixed", className)}
       {...getFloatingProps({
-        onKeyDown: (e: React.KeyboardEvent) => { if (e.key === "Escape") close(); },
+        ...props,
+        onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => { onKeyDown?.(e); if (e.key === "Escape") close(); },
       })}
     >
       <ul id={listId} className="sh-speed-dial__actions" hidden={!open}>

@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { OlHTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 
 export type TimelineEvent = {
@@ -11,17 +11,16 @@ export type TimelineEvent = {
   tone?: "neutral" | "primary" | "success" | "accent" | "danger";
 };
 
-export type TimelineProps = {
+export type TimelineProps = OlHTMLAttributes<HTMLOListElement> & {
   events: TimelineEvent[];
   /** "alternate" puts events on both sides of the line on wide screens. */
   layout?: "left" | "alternate";
-  className?: string;
 };
 
 /** Events in order: a customer's visits, an order's status history (MUI Lab's Timeline). */
-export function Timeline({ events, layout = "left", className }: TimelineProps) {
+export function Timeline({ events, layout = "left", className, ...props }: TimelineProps) {
   return (
-    <ol className={cn("sh-timeline", `sh-timeline--${layout}`, className)}>
+    <ol className={cn("sh-timeline", `sh-timeline--${layout}`, className)} {...props}>
       {events.map((e, i) => (
         <li key={i} className={cn("sh-timeline__item", `sh-timeline__item--${e.tone ?? "primary"}`)}>
           {e.time && <span className="sh-timeline__time">{e.time}</span>}

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type DialogHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../cn";
 import { XIcon } from "../icons";
 
-export type DrawerProps = {
+export type DrawerProps = Omit<DialogHTMLAttributes<HTMLDialogElement>, "open" | "onClose" | "title"> & {
   open: boolean;
   onClose: () => void;
   title: ReactNode;
@@ -12,11 +12,10 @@ export type DrawerProps = {
   footer?: ReactNode;
   /** Which edge it slides from. Bottom becomes a sheet on phones. */
   side?: "right" | "left" | "bottom";
-  className?: string;
 };
 
 /** Side panel built on the native <dialog>, like Dialog: for filters, details and mobile navigation. */
-export function Drawer({ open, onClose, title, children, footer, side = "right", className }: DrawerProps) {
+export function Drawer({ open, onClose, title, children, footer, side = "right", className, onCancel, onClick, ...props }: DrawerProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -32,11 +31,14 @@ export function Drawer({ open, onClose, title, children, footer, side = "right",
       ref={ref}
       className={cn("sh-drawer", `sh-drawer--${side}`, className)}
       aria-labelledby={titleId}
+      {...props}
       onCancel={(e) => {
+        onCancel?.(e);
         e.preventDefault();
         onClose();
       }}
       onClick={(e) => {
+        onClick?.(e);
         if (e.target === e.currentTarget) onClose();
       }}
     >

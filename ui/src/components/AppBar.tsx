@@ -1,12 +1,12 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 import { useLinkComponent } from "../link";
 
 export type NavLink = { label: ReactNode; href: string; active?: boolean };
 
-export type AppBarProps = {
+export type AppBarProps = HTMLAttributes<HTMLElement> & {
   /** Usually <img src="/stylhero-wordmark.svg" …>. */
   logo?: ReactNode;
   /** Where the logo links to. */
@@ -16,14 +16,13 @@ export type AppBarProps = {
   actions?: ReactNode;
   /** Stays at the top while scrolling. */
   sticky?: boolean;
-  className?: string;
 };
 
 /** Top bar with logo, main links and actions. Links scroll sideways on phones. */
-export function AppBar({ logo, logoHref = "/", links, actions, sticky = true, className }: AppBarProps) {
+export function AppBar({ logo, logoHref = "/", links, actions, sticky = true, className, ...props }: AppBarProps) {
   const LinkComp = useLinkComponent();
   return (
-    <header className={cn("sh-appbar", sticky && "sh-appbar--sticky", className)}>
+    <header className={cn("sh-appbar", sticky && "sh-appbar--sticky", className)} {...props}>
       {logo && <LinkComp href={logoHref} className="sh-appbar__logo">{logo}</LinkComp>}
       {links && (
         <nav className="sh-appbar__nav" aria-label="Main">

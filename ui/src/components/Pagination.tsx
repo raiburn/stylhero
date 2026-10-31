@@ -1,9 +1,10 @@
 "use client";
 
+import type { HTMLAttributes } from "react";
 import { cn } from "../cn";
 import { ChevronLeftIcon, ChevronRightIcon } from "../icons";
 
-export type PaginationProps = {
+export type PaginationProps = HTMLAttributes<HTMLElement> & {
   /** Current page, starting at 1. */
   page: number;
   /** Total number of pages. */
@@ -11,7 +12,6 @@ export type PaginationProps = {
   onPageChange: (page: number) => void;
   /** Pages shown on each side of the current one. */
   siblings?: number;
-  className?: string;
 };
 
 /** 1 … 4 5 [6] 7 8 … 20 */
@@ -24,9 +24,9 @@ export function pageRange(page: number, count: number, siblings = 1): Array<numb
   return [1, ...(start > 2 ? ["gap" as const] : []), ...middle, ...(end < count - 1 ? ["gap" as const] : []), count];
 }
 
-export function Pagination({ page, count, onPageChange, siblings = 1, className }: PaginationProps) {
+export function Pagination({ page, count, onPageChange, siblings = 1, className, ...props }: PaginationProps) {
   return (
-    <nav aria-label="Pagination" className={cn("sh-pagination", className)}>
+    <nav aria-label="Pagination" className={cn("sh-pagination", className)} {...props}>
       <button type="button" className="sh-pagination__item" aria-label="Previous page" disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
         <ChevronLeftIcon />
       </button>

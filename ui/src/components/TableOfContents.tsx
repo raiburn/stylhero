@@ -1,19 +1,18 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState, type HTMLAttributes, type ReactNode } from "react";
 import { cn } from "../cn";
 
 export type TocItem = { id: string; label: ReactNode };
 
-export type TableOfContentsProps = {
+export type TableOfContentsProps = HTMLAttributes<HTMLElement> & {
   /** Sections on the page, by element id. */
   items: TocItem[];
   label?: string;
-  className?: string;
 };
 
 /** In-page jump links that highlight the section in view (scroll spy), like the "On this page" list in docs. */
-export function TableOfContents({ items, label = "On this page", className }: TableOfContentsProps) {
+export function TableOfContents({ items, label = "On this page", className, ...props }: TableOfContentsProps) {
   const [active, setActive] = useState(items[0]?.id);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ export function TableOfContents({ items, label = "On this page", className }: Ta
   }, [items]);
 
   return (
-    <nav aria-label={label} className={cn("sh-toc", className)}>
+    <nav aria-label={label} className={cn("sh-toc", className)} {...props}>
       <ul className="sh-toc__list">
         {items.map(({ id, label }) => (
           <li key={id}>
