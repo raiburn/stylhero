@@ -33,7 +33,7 @@ Then check https://www.npmjs.com/package/@stylhero/ui.
 
 1. `npm run typecheck`: `tsc --noEmit` over `src/`.
 2. `npm run build`: regenerates `styles/tokens.css` and `styles/tailwind.css` from `../tokens.json` (and fails if any text/background pair drops below 4.5:1 contrast), then builds `dist/` with tsup.
-3. `npm test`: builds the playground and runs the 66 behavior checks in headless Chrome.
+3. `npm test`: builds the playground and runs the 68 behavior checks in headless Chrome.
 
 The tests need Google Chrome. If it isn't at `C:/Program Files/Google/Chrome/Application/chrome.exe`, point to it first:
 ```bash

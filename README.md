@@ -161,9 +161,11 @@ Then use `<Providers>{children}</Providers>` in `app/layout.tsx`.
 In `ui/`:
 ```bash
 npm run playground   # builds and opens a page with every component (light/dark follows your OS)
-npm test             # opens it in headless Chrome and checks 66 behaviors: menus, keyboard, dialogs, combobox, date pickers, data grid, tree view, charts...
+npm test             # opens it in headless Chrome and checks 68 behaviors: menus, keyboard, dialogs, combobox, date pickers, data grid, tree view, charts...
 ```
 `npm test` saves screenshots to `ui/playground/screenshots/`. Run it after changing components.
+
+GitHub Actions (`.github/workflows/ci.yml`) runs the typecheck, build and these tests on every push to `main` and every pull request. It also fails if `ui/styles/` or `claude-design-system/` differ from what `npm run build` generates, so run `npm run build` and commit the result after editing `tokens.json`. Screenshots are attached to each run.
 
 ## Use it with Claude
 
