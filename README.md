@@ -204,7 +204,7 @@ cd ui
 npm run changeset      # pick patch/minor, write a one-line summary for users
 ```
 
-To cut a release (in `ui/`): `npx changeset status` shows what is pending, and `npm run version-packages` bumps `package.json` and writes the entries into `CHANGELOG.md`. Then tidy the new entry into Added / Changed / Removed and commit. Details are in `ui/.changeset/README.md`.
+To cut a release (in `ui/`): `npx changeset status` shows what is pending, and `npm run version-packages` bumps `package.json` and writes the entries into `CHANGELOG.md`. Tidy the new entry into Added / Changed / Fixed / Removed and merge it to `main` in a pull request. GitHub Actions then publishes it to npm with provenance, tags it and creates a GitHub release. Details are in [`PUBLISHING.md`](PUBLISHING.md).
 
 ## License
 

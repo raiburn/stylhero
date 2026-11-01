@@ -69,7 +69,7 @@
     "playground": "node playground/build.mjs",
     "test": "node playground/build.mjs --no-open && node playground/test.mjs",
     "changeset": "changeset",
-    "version-packages": "changeset version",
+    "version-packages": "changeset version && npm install --package-lock-only --ignore-scripts",
     "check:pack": "npm pack --dry-run",
     "prepublishOnly": "npm run typecheck && npm run build && npm test"
   },
