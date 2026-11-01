@@ -1,21 +1,20 @@
 "use client";
 
-import { useEffect, useId, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type DialogHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../cn";
 import { XIcon } from "../icons";
 
-export type DialogProps = {
+export type DialogProps = Omit<DialogHTMLAttributes<HTMLDialogElement>, "open" | "onClose" | "title"> & {
   open: boolean;
   onClose: () => void;
   title: ReactNode;
   children?: ReactNode;
   /** Buttons, right-aligned. Put the main action last. */
   footer?: ReactNode;
-  className?: string;
 };
 
 /** Modal built on the native <dialog>: focus trapping, Esc to close and the backdrop come from the browser. */
-export function Dialog({ open, onClose, title, children, footer, className }: DialogProps) {
+export function Dialog({ open, onClose, title, children, footer, className, onCancel, onClick, ...props }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
@@ -31,11 +30,14 @@ export function Dialog({ open, onClose, title, children, footer, className }: Di
       ref={ref}
       className={cn("sh-dialog", className)}
       aria-labelledby={titleId}
+      {...props}
       onCancel={(e) => {
+        onCancel?.(e);
         e.preventDefault();
         onClose();
       }}
       onClick={(e) => {
+        onClick?.(e);
         // a click on the backdrop lands on the <dialog> element itself
         if (e.target === e.currentTarget) onClose();
       }}

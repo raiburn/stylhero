@@ -1,10 +1,10 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useId, useState, type FieldsetHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../cn";
 import { Checkbox, Radio } from "./Checkbox";
 
-export type FieldSetProps = {
+export type FieldSetProps = FieldsetHTMLAttributes<HTMLFieldSetElement> & {
   /** The group's question, e.g. "Notify me by". */
   legend: ReactNode;
   hint?: ReactNode;
@@ -12,15 +12,14 @@ export type FieldSetProps = {
   /** Lay the options out side by side. */
   row?: boolean;
   children: ReactNode;
-  className?: string;
 };
 
 /** Groups related controls under one label (MUI's FormControl + FormLabel + FormGroup). */
-export function FieldSet({ legend, hint, error, row, children, className }: FieldSetProps) {
+export function FieldSet({ legend, hint, error, row, children, className, ...props }: FieldSetProps) {
   const id = useId();
   const message = error ?? hint;
   return (
-    <fieldset className={cn("sh-fieldset", error ? "sh-field--error" : undefined, className)} aria-describedby={message ? id : undefined}>
+    <fieldset className={cn("sh-fieldset", error ? "sh-field--error" : undefined, className)} aria-describedby={message ? id : undefined} {...props}>
       <legend className="sh-field__label">{legend}</legend>
       <div className={cn("sh-fieldset__options", row && "sh-fieldset__options--row")}>{children}</div>
       {message && <span id={id} className="sh-field__hint">{message}</span>}
@@ -31,7 +30,7 @@ export function FieldSet({ legend, hint, error, row, children, className }: Fiel
 export type ChoiceOption = { value: string; label: ReactNode; hint?: ReactNode; disabled?: boolean };
 const norm = (o: ChoiceOption | string): ChoiceOption => (typeof o === "string" ? { value: o, label: o } : o);
 
-export type RadioGroupProps = Omit<FieldSetProps, "children"> & {
+export type RadioGroupProps = Omit<FieldSetProps, "children" | "defaultValue"> & {
   options: Array<ChoiceOption | string>;
   value?: string;
   defaultValue?: string;
@@ -62,7 +61,7 @@ export function RadioGroup({ options, value, defaultValue, onValueChange, name, 
   );
 }
 
-export type CheckboxGroupProps = Omit<FieldSetProps, "children"> & {
+export type CheckboxGroupProps = Omit<FieldSetProps, "children" | "defaultValue"> & {
   options: Array<ChoiceOption | string>;
   value?: string[];
   defaultValue?: string[];

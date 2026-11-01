@@ -1,23 +1,22 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, OlHTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 import { CheckIcon } from "../icons";
 
 export type Step = { label: ReactNode; description?: ReactNode; /** Shows the step as failed. */ error?: boolean };
 
-export type StepperProps = {
+export type StepperProps = OlHTMLAttributes<HTMLOListElement> & {
   steps: Step[];
   /** Index of the current step, starting at 0. Steps before it show as done. */
   active: number;
   orientation?: "horizontal" | "vertical";
   /** Makes each step a button, so people can jump back (MUI's non-linear stepper). */
   onStepClick?: (index: number) => void;
-  className?: string;
 };
 
 /** Progress through a multi-step flow (sign-up, checkout). */
-export function Stepper({ steps, active, orientation = "horizontal", onStepClick, className }: StepperProps) {
+export function Stepper({ steps, active, orientation = "horizontal", onStepClick, className, ...props }: StepperProps) {
   return (
-    <ol className={cn("sh-stepper", `sh-stepper--${orientation}`, className)}>
+    <ol className={cn("sh-stepper", `sh-stepper--${orientation}`, className)} {...props}>
       {steps.map((s, i) => {
         const state = s.error ? "error" : i < active ? "done" : i === active ? "current" : "todo";
         const body = (
@@ -41,7 +40,7 @@ export function Stepper({ steps, active, orientation = "horizontal", onStepClick
   );
 }
 
-export type MobileStepperProps = {
+export type MobileStepperProps = HTMLAttributes<HTMLDivElement> & {
   /** Number of steps. */
   steps: number;
   active: number;
@@ -51,13 +50,12 @@ export type MobileStepperProps = {
   back?: ReactNode;
   /** Usually a Next button. */
   next?: ReactNode;
-  className?: string;
 };
 
 /** Compact stepper for phones and carousels: Back · dots · Next. */
-export function MobileStepper({ steps, active, variant = "dots", back, next, className }: MobileStepperProps) {
+export function MobileStepper({ steps, active, variant = "dots", back, next, className, ...props }: MobileStepperProps) {
   return (
-    <div className={cn("sh-mobile-stepper", className)}>
+    <div className={cn("sh-mobile-stepper", className)} {...props}>
       {back ?? <span />}
       {variant === "dots" ? (
         <span className="sh-mobile-stepper__dots" role="img" aria-label={`Step ${active + 1} of ${steps}`}>

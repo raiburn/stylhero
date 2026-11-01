@@ -1,26 +1,25 @@
 "use client";
 
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 import { useLinkComponent } from "../link";
 
 export type SideNavItem = { label: ReactNode; href: string; icon?: ReactNode; active?: boolean; /** Count or Badge on the right. */ badge?: ReactNode };
 export type SideNavSection = { title?: ReactNode; items: SideNavItem[] };
 
-export type SideNavProps = {
+export type SideNavProps = HTMLAttributes<HTMLElement> & {
   sections: SideNavSection[];
   /** Top of the sidebar, e.g. the logo. */
   header?: ReactNode;
   /** Bottom of the sidebar, e.g. the signed-in user. */
   footer?: ReactNode;
-  className?: string;
 };
 
 /** Vertical app navigation for dashboards. Put it in a Drawer on phones. */
-export function SideNav({ sections, header, footer, className }: SideNavProps) {
+export function SideNav({ sections, header, footer, className, ...props }: SideNavProps) {
   const LinkComp = useLinkComponent();
   return (
-    <aside className={cn("sh-sidenav", className)}>
+    <aside className={cn("sh-sidenav", className)} {...props}>
       {header && <div className="sh-sidenav__header">{header}</div>}
       <nav className="sh-sidenav__nav" aria-label="Sections">
         {sections.map((s, i) => (

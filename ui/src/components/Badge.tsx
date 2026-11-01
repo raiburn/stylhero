@@ -10,7 +10,7 @@ export function Badge({ tone = "neutral", className, ...props }: BadgeProps) {
   return <span className={cn("sh-badge", `sh-badge--${tone}`, className)} {...props} />;
 }
 
-export type CountBadgeProps = {
+export type CountBadgeProps = HTMLAttributes<HTMLSpanElement> & {
   /** The thing the count sits on, e.g. an IconButton or Avatar. */
   children: ReactNode;
   /** 0 hides the badge unless `showZero`. */
@@ -23,14 +23,13 @@ export type CountBadgeProps = {
   tone?: "danger" | "primary" | "accent" | "success";
   /** Screen-reader text, e.g. "3 unread messages". Defaults to the number. */
   label?: string;
-  className?: string;
 };
 
 /** Number or dot on the corner of another element (MUI's Badge). */
-export function CountBadge({ children, count = 0, max = 99, dot, showZero, tone = "danger", label, className }: CountBadgeProps) {
+export function CountBadge({ children, count = 0, max = 99, dot, showZero, tone = "danger", label, className, ...props }: CountBadgeProps) {
   const visible = dot || count > 0 || showZero;
   return (
-    <span className={cn("sh-count-badge", className)}>
+    <span className={cn("sh-count-badge", className)} {...props}>
       {children}
       {visible && (
         <span className={cn("sh-count-badge__badge", `sh-count-badge__badge--${tone}`, dot && "sh-count-badge__badge--dot")} aria-label={label} role={label ? "status" : undefined}>

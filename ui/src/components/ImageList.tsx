@@ -14,7 +14,7 @@ export type ImageListItem = {
   rows?: number;
 };
 
-export type ImageListProps = {
+export type ImageListProps = HTMLAttributes<HTMLUListElement> & {
   items: ImageListItem[];
   /** "masonry" keeps each image's own height. "quilted" uses cols/rows per item. */
   variant?: "standard" | "quilted" | "masonry";
@@ -24,17 +24,16 @@ export type ImageListProps = {
   gap?: Space;
   /** Where the title sits: over the image or under it. */
   titlePosition?: "overlay" | "below";
-  className?: string;
 };
 
 /** Grid of photos: products, a business's gallery, rewards. */
-export function ImageList({ items, variant = "standard", columns = 3, rowHeight = 180, gap = 2, titlePosition = "overlay", className }: ImageListProps) {
+export function ImageList({ items, variant = "standard", columns = 3, rowHeight = 180, gap = 2, titlePosition = "overlay", className, style: styleProp, ...props }: ImageListProps) {
   const masonry = variant === "masonry";
   const style: CSSProperties = masonry
     ? { columnCount: columns, columnGap: space(gap) }
     : { gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`, gridAutoRows: rowHeight, gap: space(gap) };
   return (
-    <ul className={cn("sh-image-list", `sh-image-list--${variant}`, className)} style={style}>
+    <ul className={cn("sh-image-list", `sh-image-list--${variant}`, className)} style={{ ...style, ...styleProp }} {...props}>
       {items.map((it, i) => (
         <li
           key={i}

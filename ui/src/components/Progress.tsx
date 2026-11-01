@@ -1,7 +1,7 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 
-export type ProgressProps = {
+export type ProgressProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   /** 0 to max. Leave out for an indeterminate (moving) bar. */
   value?: number;
   max?: number;
@@ -9,15 +9,14 @@ export type ProgressProps = {
   /** Show "40%" (or a custom string) next to the label. */
   valueText?: boolean | string;
   tone?: "primary" | "success" | "accent";
-  className?: string;
 };
 
 /** Linear progress bar. */
-export function Progress({ value, max = 100, label, valueText, tone = "primary", className }: ProgressProps) {
+export function Progress({ value, max = 100, label, valueText, tone = "primary", className, ...props }: ProgressProps) {
   const pct = value === undefined ? undefined : Math.min(100, Math.max(0, (value / max) * 100));
   const text = typeof valueText === "string" ? valueText : valueText && pct !== undefined ? `${Math.round(pct)}%` : null;
   return (
-    <div className={cn("sh-progress", `sh-progress--${tone}`, className)}>
+    <div className={cn("sh-progress", `sh-progress--${tone}`, className)} {...props}>
       {(label || text) && (
         <div className="sh-progress__head">
           <span>{label}</span>
@@ -38,7 +37,7 @@ export function Progress({ value, max = 100, label, valueText, tone = "primary",
   );
 }
 
-export type ProgressCircleProps = {
+export type ProgressCircleProps = HTMLAttributes<HTMLDivElement> & {
   value: number;
   max?: number;
   /** Diameter in px. */
@@ -47,23 +46,23 @@ export type ProgressCircleProps = {
   children?: ReactNode;
   label?: string;
   tone?: "primary" | "success" | "accent";
-  className?: string;
 };
 
 /** Ring progress, e.g. "7 of 10 stamps". */
-export function ProgressCircle({ value, max = 100, size = 64, children, label, tone = "primary", className }: ProgressCircleProps) {
+export function ProgressCircle({ value, max = 100, size = 64, children, label, tone = "primary", className, style, ...props }: ProgressCircleProps) {
   const pct = Math.min(100, Math.max(0, (value / max) * 100));
   const r = 15.5;
   const c = 2 * Math.PI * r;
   return (
     <div
       className={cn("sh-ring", `sh-progress--${tone}`, className)}
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, ...style }}
       role="progressbar"
       aria-valuemin={0}
       aria-valuemax={max}
       aria-valuenow={value}
       aria-label={label}
+      {...props}
     >
       <svg viewBox="0 0 36 36" aria-hidden>
         <circle cx="18" cy="18" r={r} className="sh-ring__track" />

@@ -1,11 +1,11 @@
 "use client";
 
-import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useId, useRef, useState, type HTMLAttributes, type KeyboardEvent, type ReactNode } from "react";
 import { cn } from "../cn";
 
 export type TabItem = { id: string; label: ReactNode; content: ReactNode; disabled?: boolean };
 
-export type TabsProps = {
+export type TabsProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> & {
   items: TabItem[];
   /** Controlled selected tab id. */
   value?: string;
@@ -17,10 +17,9 @@ export type TabsProps = {
   orientation?: "horizontal" | "vertical";
   /** "pills" uses a segmented look instead of an underline. */
   variant?: "line" | "pills";
-  className?: string;
 };
 
-export function Tabs({ items, value, defaultValue, onValueChange, label, orientation = "horizontal", variant = "line", className }: TabsProps) {
+export function Tabs({ items, value, defaultValue, onValueChange, label, orientation = "horizontal", variant = "line", className, ...props }: TabsProps) {
   const [internal, setInternal] = useState(defaultValue ?? items.find((t) => !t.disabled)?.id);
   const selected = value ?? internal;
   const baseId = useId();
@@ -48,7 +47,7 @@ export function Tabs({ items, value, defaultValue, onValueChange, label, orienta
   };
 
   return (
-    <div className={cn("sh-tabs", vertical && "sh-tabs--vertical", variant === "pills" && "sh-tabs--pills", className)}>
+    <div className={cn("sh-tabs", vertical && "sh-tabs--vertical", variant === "pills" && "sh-tabs--pills", className)} {...props}>
       <div className="sh-tabs__list" role="tablist" aria-label={label} aria-orientation={orientation} onKeyDown={onKeyDown}>
         {items.map((t) => (
           <button

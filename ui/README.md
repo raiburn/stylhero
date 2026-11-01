@@ -86,7 +86,11 @@ export function Rewards() {
 }
 ```
 
-All components are client components (the bundle starts with `"use client"`), so Next.js server components can import them directly.
+Each component is its own file, and only interactive ones are marked `"use client"`, so presentational components (Card, Badge, Text, Stack…) render as server components with no JavaScript. All of them can be imported from server components. Add `experimental: { optimizePackageImports: ["@stylhero/ui"] }` to `next.config.ts` so Next.js only loads the ones you import.
+
+Components that render their own element also take that element's HTML attributes (`id`, `style`, `data-*`, `aria-*`, event handlers…) and put them on it, as `<Button>` does. Your `className` and `style` are added to the component's own, and handlers it uses internally (like Dialog's backdrop click) run alongside yours. Two kinds don't:
+- Tooltip, Popover, Menu and the transitions wrap the element you pass them, so put attributes on that element.
+- Combobox, NumberInput and the date and time pickers take `id`, `name`, `disabled` and `className`, which go to the form control and field.
 
 ### Links with next/link
 

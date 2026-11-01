@@ -67,7 +67,7 @@ export function More() {
           </S.Card>
 
           <S.Card title="Charts" subtitle="Hover for values; every chart has a table view">
-            <S.BarChart title="Visits by day" labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]} height={220}
+            <S.BarChart data-attrs="chart" title="Visits by day" labels={["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]} height={220}
               series={[{ name: "New", data: [12, 18, 9, 22, 30, 41, 15] }, { name: "Returning", data: [40, 35, 44, 38, 52, 66, 30] }]} />
             <S.LineChart title="Stamps this year" area curved labels={["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"]} height={220}
               series={[{ name: "Hermosillo", data: [120, 132, 150, 170, 160, 190, 210, 230] }, { name: "Nogales", data: [80, 90, 85, 100, 120, 115, 130, 150] }, { name: "Guaymas", data: [40, 45, 60, 58, 70, 82, 80, 95] }]} />
@@ -82,7 +82,7 @@ export function More() {
             <S.Stack align="center"><S.Gauge value={68} label="of 500 visits" /></S.Stack>
             <S.Stack direction="row" justify="space-between" align="center">
               <S.Stat label="Visits" value="340" change="+12%" />
-              <S.Sparkline data={[3, 5, 4, 6, 8, 7, 9, 11, 10, 12]} label="Visits, last 10 days, trending up" />
+              <S.Sparkline data-attrs="sparkline" data={[3, 5, 4, 6, 8, 7, 9, 11, 10, 12]} label="Visits, last 10 days, trending up" />
             </S.Stack>
           </S.Card>
           <S.Card title="Basket size vs visits">
@@ -92,6 +92,7 @@ export function More() {
         </S.Grid>
 
         <S.DataGrid<Customer>
+          data-attrs="grid"
           label="Customers"
           rows={customers}
           search="Search customers"
