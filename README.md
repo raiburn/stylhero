@@ -195,7 +195,7 @@ Adding a color: add it to `color.tokens` with a light and dark value. It becomes
 
 `@stylhero/ui` follows [semantic versioning](https://semver.org). Every release is listed in [`ui/CHANGELOG.md`](ui/CHANGELOG.md).
 
-While the package is in **0.x**, a minor version (0.4 → 0.5) may contain breaking changes. They are always listed in the changelog under **Changed** or **Removed**, so read those sections before upgrading. Patch versions (0.4.0 → 0.4.1) are always safe. Pin with `~0.4.0` if you want to accept only patches.
+While the package is in **0.x**, a minor version (0.5 → 0.6) may contain breaking changes. They are always listed in the changelog under **Changed** or **Removed**, so read those sections before upgrading. Patch versions (0.5.0 → 0.5.1) are always safe. Pin with `~0.5.0` if you want to accept only patches.
 
 Releases are managed with [Changesets](https://changesets.dev). When your change should show up in the next release, run this in `ui/` and commit the file it creates along with your change:
 
