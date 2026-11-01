@@ -195,7 +195,7 @@ Adding a color: add it to `color.tokens` with a light and dark value. It becomes
 
 `@stylhero/ui` follows [semantic versioning](https://semver.org). Every release is listed in [`ui/CHANGELOG.md`](ui/CHANGELOG.md).
 
-While the package is in **0.x**, a minor version (0.4 → 0.5) may contain breaking changes. They are always listed in the changelog under **Changed** or **Removed**, so read those sections before upgrading. Patch versions (0.4.0 → 0.4.1) are always safe. Pin with `~0.4.0` if you want to accept only patches.
+While the package is in **0.x**, a minor version (0.5 → 0.6) may contain breaking changes. They are always listed in the changelog under **Changed** or **Removed**, so read those sections before upgrading. Patch versions (0.5.0 → 0.5.1) are always safe. Pin with `~0.5.0` if you want to accept only patches.
 
 Releases are managed with [Changesets](https://changesets.dev). When your change should show up in the next release, run this in `ui/` and commit the file it creates along with your change:
 
@@ -204,7 +204,7 @@ cd ui
 npm run changeset      # pick patch/minor, write a one-line summary for users
 ```
 
-To cut a release (in `ui/`): `npx changeset status` shows what is pending, and `npm run version-packages` bumps `package.json` and writes the entries into `CHANGELOG.md`. Then tidy the new entry into Added / Changed / Removed and commit. Details are in `ui/.changeset/README.md`.
+To cut a release (in `ui/`): `npx changeset status` shows what is pending, and `npm run version-packages` bumps `package.json` and writes the entries into `CHANGELOG.md`. Tidy the new entry into Added / Changed / Fixed / Removed and merge it to `main` in a pull request. GitHub Actions then publishes it to npm with provenance, tags it and creates a GitHub release. Details are in [`PUBLISHING.md`](PUBLISHING.md).
 
 ## License
 

@@ -14,6 +14,16 @@ New entries are generated with [Changesets](https://changesets.dev) (see
 
 ## Unreleased
 
+## 0.5.0 - 2026-10-31
+
+### Added
+
+- Components that render their own element now accept that element's HTML attributes (`id`, `style`, `data-*`, `aria-*`, event handlers…) and pass them to it: Accordion, AppBar, Avatar, AvatarGroup, Backdrop, BottomNav, the charts (BarChart, LineChart, ScatterChart, PieChart, Sparkline, Gauge), Chip, CountBadge, DataGrid, Dialog, Divider, Drawer, EmptyState, FieldSet (and RadioGroup/CheckboxGroup), ImageList, ListItem, MobileStepper, Modal, Pagination, Progress, ProgressCircle, Rating, SideNav, Skeleton, SpeedDial, Spinner, Stat, Stepper, TableOfContents, Tabs, Timeline, TransferList and TreeView. Your `style` is merged with the component's own, and your `onClick`/`onCancel`/`onKeyDown`/`onMouseLeave` run alongside the internal handlers. Before, these attributes were rejected by TypeScript and dropped at runtime.
+
+### Fixed
+
+- `Calendar`, `DatePicker` and `DateRangePicker`: keyboard focus no longer gets lost when an arrow key or PageUp/PageDown moves to another month or onto a disabled day. Keyboard moves now skip disabled days, and the calendar opens on the nearest enabled day when today is disabled.
+
 ## 0.4.0 - 2026-10-30
 
 ### Added

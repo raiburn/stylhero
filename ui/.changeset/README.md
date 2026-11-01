@@ -29,9 +29,10 @@ can be listed under "Changed"/"Removed" in `CHANGELOG.md`.
 ```bash
 cd ui
 npx changeset status   # what will be released
-npm run version-packages        # bumps package.json and writes CHANGELOG.md, deletes the changesets
+npm run version-packages        # bumps package.json and the lockfile, writes CHANGELOG.md, deletes the changesets
 ```
 
 `changeset version` inserts the new version above the latest version heading in
 `CHANGELOG.md` (below "Unreleased"). Tidy the generated entry into Added / Changed /
-Fixed / Removed sections and add the date, then commit.
+Fixed / Removed sections and add the date, then merge it to `main` in a pull request.
+The release workflow publishes it to npm (see `PUBLISHING.md` in the repo root).
