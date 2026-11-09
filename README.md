@@ -7,6 +7,7 @@ One set of styles, used in two places:
 | `tokens.json` | **Source of truth**: colors (light + dark), fonts, type sizes, spacing, radii, shadow. |
 | `ui/` | `@stylhero/ui`, an npm package for Next.js: `tokens.css`, `components.css`, `tailwind.css`, an optional `base.css` and 80+ React components covering Material UI, MUI Lab and the free MUI X packages (list below). |
 | `ui/playground/` | Every component on one page, plus an automated test that clicks through them. |
+| `native/` | `@stylhero/native`, the React Native / Expo package: a typed theme generated from `tokens.json`, `ThemeProvider` with light/dark, and accessible core components. See [native/README.md](native/README.md). |
 | `claude-design-system/` | The same system as a Claude design system: https://claude.ai/artifact/KfcuDkGt29XNKmJTEtEamb |
 | `brand/logo/` | Wordmark (light + reverse) and app icon, as outlined SVGs. Also shipped in the package as `@stylhero/ui/logo/*`. |
 
