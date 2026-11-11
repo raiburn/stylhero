@@ -47,6 +47,7 @@
 .sh-badge--primary { background: var(--primary-soft); color: var(--primary); }
 .sh-badge--info { background: var(--sky-soft); color: var(--primary); }
 .sh-badge--accent { background: var(--accent-soft); color: var(--accent-ink); }
+.sh-badge--warning { background: var(--accent-soft); color: var(--accent-ink); }
 .sh-badge--success { background: var(--success-soft); color: var(--success); }
 .sh-badge--danger { background: var(--danger-soft); color: var(--danger); }
 
@@ -74,7 +75,7 @@
   padding: 0 var(--space-3);
   background: var(--surface-raised);
   color: var(--ink);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: var(--radius-md);
   font: 400 16px/24px var(--font-sans);
   transition: border-color 0.15s, box-shadow 0.15s;
@@ -336,9 +337,9 @@ button.sh-chip__main:hover { background: var(--surface-sunken); }
 .sh-slider__label { display: flex; justify-content: space-between; gap: var(--space-3); }
 .sh-slider__label output { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 .sh-slider { appearance: none; width: 100%; height: 20px; margin: 0; background: transparent; cursor: pointer; }
-.sh-slider::-webkit-slider-runnable-track { height: 6px; border-radius: var(--radius-full); background: linear-gradient(to right, var(--primary) var(--sh-fill, 0%), var(--line) var(--sh-fill, 0%)); }
+.sh-slider::-webkit-slider-runnable-track { height: 6px; border-radius: var(--radius-full); background: linear-gradient(to right, var(--primary) var(--sh-fill, 0%), var(--line-strong) var(--sh-fill, 0%)); }
 .sh-slider::-webkit-slider-thumb { appearance: none; width: 20px; height: 20px; margin-top: -7px; background: var(--surface-raised); border: 2px solid var(--primary); border-radius: var(--radius-full); box-shadow: var(--shadow-card); transition: box-shadow 0.15s; }
-.sh-slider::-moz-range-track { height: 6px; background: var(--line); border-radius: var(--radius-full); }
+.sh-slider::-moz-range-track { height: 6px; background: var(--line-strong); border-radius: var(--radius-full); }
 .sh-slider::-moz-range-progress { height: 6px; background: var(--primary); border-radius: var(--radius-full); }
 .sh-slider::-moz-range-thumb { box-sizing: border-box; width: 20px; height: 20px; background: var(--surface-raised); border: 2px solid var(--primary); border-radius: var(--radius-full); }
 .sh-slider:focus { outline: none; }
@@ -971,5 +972,21 @@ label.sh-rating__star { cursor: pointer; }
 @media (prefers-reduced-motion: reduce) {
   .sh-link__arrow, .sh-card--ghost, .sh-toc__line { transition: none; }
 }
+
+/* ChoiceCard: a radio/checkbox drawn as a card. The input stays in the label (focusable,
+   form-submittable) but is visually hidden; the card shows its state. */
+.sh-choice-card { position: relative; display: flex; align-items: flex-start; gap: var(--space-3); padding: var(--space-4); background: var(--surface-raised); color: var(--ink); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); cursor: pointer; transition: border-color 0.15s, background-color 0.15s, box-shadow 0.15s; }
+.sh-choice-card:hover { border-color: var(--primary); }
+.sh-choice-card__input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.sh-choice-card:has(.sh-choice-card__input:checked) { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+.sh-choice-card:has(.sh-choice-card__input:focus-visible) { outline: 2px solid var(--primary); outline-offset: 2px; }
+.sh-choice-card:has(.sh-choice-card__input:disabled) { opacity: 0.5; cursor: not-allowed; }
+.sh-choice-card:has(.sh-choice-card__input:disabled):hover { border-color: var(--line-strong); }
+.sh-choice-card__icon { display: inline-grid; place-items: center; flex-shrink: 0; color: var(--primary); }
+.sh-choice-card__icon svg { width: 20px; height: 20px; }
+.sh-choice-card__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.sh-choice-card__label { font: 600 15px/20px var(--font-sans); }
+.sh-choice-card__description { font: 400 14px/20px var(--font-sans); color: var(--ink-muted); }
+@media (prefers-reduced-motion: reduce) { .sh-choice-card { transition: none; } }
 
 } /* @layer components */

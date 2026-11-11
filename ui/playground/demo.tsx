@@ -85,6 +85,23 @@ function App() {
               </S.Stack>
             </S.Card>
 
+            <S.Card title="Choices" titleAs="h2" id="choices-card">
+              <S.FieldSet legend="Resolution">
+                <S.Stack gap={2}>
+                  <S.ChoiceCard id="res-1080" name="res" value="1080p" label="1080p" description="Best for budget builds" defaultChecked />
+                  <S.ChoiceCard id="res-1440" name="res" value="1440p" label="1440p" description="Sharper, needs a stronger GPU" />
+                  <S.ChoiceCard id="res-4k" name="res" value="4k" label="4K" description="Not available on this budget" disabled />
+                </S.Stack>
+              </S.FieldSet>
+              <S.ChoiceCard id="quiet" type="checkbox" label="Quiet build" description="Prefer low-noise fans" icon={<StarIcon />} />
+              <S.Stack direction="row" gap={2} wrap align="center">
+                <S.Button id="btn-link" href="#docs" variant="secondary">Read the docs</S.Button>
+                <S.Button id="btn-external" href="https://example.com" variant="ghost">Example site</S.Button>
+                <S.Badge id="badge-warning" tone="warning">Low stock</S.Badge>
+                <S.Button id="toast-outside" variant="ghost" onClick={() => setTimeout(() => S.toast({ message: "Sent from outside React", tone: "info" }), 0)}>Toast from anywhere</S.Button>
+              </S.Stack>
+            </S.Card>
+
             <S.Card title="List">
               <S.List>
                 <S.ListItem leading={<S.Avatar name="Ana Ruiz" size="sm" />} title="Ana Ruiz" description="8 stamps · last visit today" trailing={<S.Badge tone="accent">Reward</S.Badge>} href="#ana" />

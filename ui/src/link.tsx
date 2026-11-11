@@ -1,8 +1,13 @@
 "use client";
 
-import { createContext, useContext, type ComponentType, type ReactNode } from "react";
+import { createContext, useContext, type ElementType, type ReactNode } from "react";
 
-type LinkLike = ComponentType<{ href: string; className?: string; children?: ReactNode; [key: string]: unknown }> | "a";
+/**
+ * Any component that renders a link from `href`, `className` and `children` (next/link,
+ * react-router's Link, "a"). Typed loosely on purpose: router link types differ across
+ * @types/react 18 and 19 (next/link's propTypes fail a stricter ComponentType check).
+ */
+export type LinkLike = ElementType;
 
 const LinkContext = createContext<LinkLike>("a");
 

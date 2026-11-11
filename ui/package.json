@@ -41,6 +41,8 @@
     "./tokens.css": "./styles/tokens.css",
     "./components.css": "./styles/components.css",
     "./tailwind.css": "./styles/tailwind.css",
+    "./tailwind-preset": "./styles/tailwind-preset.cjs",
+    "./styles/*": "./styles/*",
     "./base.css": "./styles/base.css",
     "./logo/*": "./logo/*"
   },
