@@ -2,7 +2,8 @@ import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../cn";
 
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
-  tone?: "neutral" | "primary" | "info" | "accent" | "success" | "danger";
+  /** "warning" has the accent look but says what it means (pairs with Alert tone="warning"). */
+  tone?: "neutral" | "primary" | "info" | "accent" | "warning" | "success" | "danger";
 };
 
 /** Small label, e.g. "Reward ready". */

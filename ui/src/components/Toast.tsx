@@ -17,7 +17,23 @@ export type ToastOptions = {
 };
 type ToastItem = ToastOptions & { id: number };
 
-const ToastContext = createContext<((t: ToastOptions | string) => void) | null>(null);
+type ShowToast = (t: ToastOptions | string) => void;
+export type ToastPosition = "bottom-right" | "bottom-center" | "bottom-left" | "top-center";
+
+const ToastContext = createContext<ShowToast | null>(null);
+
+// The most recently mounted ToastProvider, for toast() calls outside React.
+let activeToast: ShowToast | null = null;
+
+/**
+ * Shows a toast from anywhere, including code outside components (fetch helpers,
+ * plain modules). Needs a mounted <ToastProvider>; without one it warns in
+ * development and does nothing. Inside components, prefer useToast().
+ */
+export function toast(input: ToastOptions | string) {
+  if (activeToast) activeToast(input);
+  else if (process.env.NODE_ENV !== "production") console.warn("toast() was called with no <ToastProvider> mounted.");
+}
 
 function ToastView({ message, tone = "info", action, onDismiss }: ToastOptions & { onDismiss: () => void }) {
   const Icon = toneIcons[tone];
@@ -37,8 +53,11 @@ function ToastView({ message, tone = "info", action, onDismiss }: ToastOptions &
   );
 }
 
-/** Wrap your app once (e.g. in app/layout.tsx), then call `useToast()` anywhere below it. */
-export function ToastProvider({ children }: { children: ReactNode }) {
+/**
+ * Wrap your app once (e.g. in app/layout.tsx), then call `useToast()` anywhere below it,
+ * or `toast()` from outside components.
+ */
+export function ToastProvider({ children, position = "bottom-right" }: { children: ReactNode; position?: ToastPosition }) {
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const nextId = useRef(0);
 
@@ -55,10 +74,22 @@ export function ToastProvider({ children }: { children: ReactNode }) {
     [dismiss]
   );
 
+  useEffect(() => {
+    activeToast = toast;
+    return () => {
+      if (activeToast === toast) activeToast = null;
+    };
+  }, [toast]);
+
   return (
     <ToastContext.Provider value={toast}>
       {children}
-      <div className="sh-toaster" role="region" aria-label="Notifications" aria-live="polite">
+      <div
+        className={cn("sh-toaster", position !== "bottom-right" && `sh-toaster--${position}`)}
+        role="region"
+        aria-label="Notifications"
+        aria-live="polite"
+      >
         {toasts.map((t) => <ToastView key={t.id} {...t} onDismiss={() => dismiss(t.id)} />)}
       </div>
     </ToastContext.Provider>
@@ -76,7 +107,7 @@ export type SnackbarProps = ToastOptions & {
   open: boolean;
   onClose: () => void;
   /** Where it sits on screen. */
-  position?: "bottom-right" | "bottom-center" | "bottom-left" | "top-center";
+  position?: ToastPosition;
 };
 
 /** A single controlled toast (MUI's Snackbar), for when you own the open state. Use useToast() for fire-and-forget messages. */

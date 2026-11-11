@@ -67,8 +67,9 @@ Built in, not opt-in:
 
 - **Touch targets:** every pressable is at least 44×44pt. Small buttons keep their look and get the extra area through `hitSlop`.
 - **Roles and state:** buttons expose `button` with `disabled` and `busy`; `h1`–`h3` and `display` expose `header` so screen reader users can jump between sections.
-- **Font scaling:** text follows the user's font size setting (headings up to 1.5×, body up to 2×). Buttons use `minHeight`, so labels grow instead of clipping.
-- **Forms:** `TextField` is labelled by its visible label; the hint or error is the accessibility hint; errors set `aria-invalid`, use a polite live region on Android, and are announced on iOS.
+- **Font scaling:** text follows the user's font size setting (headings up to 1.5×, body up to 2×). Buttons use `minHeight` and wrapping labels, so they grow instead of clipping.
+- **Forms:** `TextField` is labelled by its visible label; the hint or error is the accessibility hint; errors set `aria-invalid`, use a polite live region on Android, and are announced on iOS. If your screen moves focus to the first invalid field (or shows an error summary), pass `announceError={false}` so errors aren't read twice. The border uses `lineStrong`, which keeps 3:1 contrast (WCAG 1.4.11).
+- **Long labels:** `Button` labels wrap instead of being cut off at large text sizes; pass `numberOfLines` to cap them.
 - **Rows read as one element:** `ListItem` and pressable `Card` combine title and subtitle into one label; decorative chevrons are hidden from screen readers.
 - **Contrast:** the color pairs are checked against WCAG AA when tokens are built (see `ui/scripts/build-tokens.mjs`).
 

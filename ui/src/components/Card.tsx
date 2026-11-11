@@ -16,9 +16,11 @@ export type CardProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
    * "ghost": no surface until hovered, for lists of entries on a page (portfolios, blogs).
    */
   variant?: "elevated" | "outlined" | "ghost";
+  /** Element for the title, to fit the page's heading outline. Default "h3". */
+  titleAs?: "h2" | "h3" | "h4" | "h5" | "h6" | "p";
 };
 
-export function Card({ title, subtitle, action, media, footer, variant = "elevated", className, children, ...props }: CardProps) {
+export function Card({ title, subtitle, action, media, footer, variant = "elevated", titleAs: Title = "h3", className, children, ...props }: CardProps) {
   const header = title || subtitle || action;
   return (
     <div className={cn("sh-card", variant !== "elevated" && `sh-card--${variant}`, className)} {...props}>
@@ -26,7 +28,7 @@ export function Card({ title, subtitle, action, media, footer, variant = "elevat
       {header && (
         <div className="sh-card__header">
           <div className="sh-card__heading">
-            {title && <h3 className="sh-card__title">{title}</h3>}
+            {title && <Title className="sh-card__title">{title}</Title>}
             {subtitle && <p className="sh-card__subtitle">{subtitle}</p>}
           </div>
           {action}

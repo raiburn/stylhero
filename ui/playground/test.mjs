@@ -343,6 +343,34 @@ await center(M + ".sh-pie");
 await page.hover(M + ".sh-pie .sh-chart__legend li:nth-child(2)"); await wait(40);
 check("PieChart legend hover highlights the slice", /26%/.test(await text(M + ".sh-pie__center")), await text(M + ".sh-pie__center"));
 
+// Fixes from adopting Stylhero in BuildMyRig
+await center("#choices-card");
+check("Card titleAs renders the chosen heading level", (await page.$eval("#choices-card .sh-card__title", (e) => e.tagName)) === "H2");
+check("ChoiceCard is a real radio with its label as the accessible name",
+  await page.$eval("#res-1440", (e) => e.type === "radio" && e.labels[0].textContent.includes("1440p")));
+await page.click('label:has(#res-1440)'); await wait(30);
+check("ChoiceCard: clicking the card checks its radio", await page.$eval("#res-1440", (e) => e.checked) && !(await page.$eval("#res-1080", (e) => e.checked)));
+await page.focus("#res-1440"); await page.keyboard.press("ArrowUp"); await wait(30);
+check("ChoiceCard: arrow keys move through the radio group", await page.$eval("#res-1080", (e) => e.checked));
+await page.keyboard.press("ArrowDown"); await page.keyboard.press("ArrowDown"); await wait(30);
+check("ChoiceCard: disabled options are skipped and can't be checked", !(await page.$eval("#res-4k", (e) => e.checked)));
+await page.mouse.move(5, 5); await wait(200);
+const checkedLook = await page.$eval('label:has(#res-1080)', (e) => getComputedStyle(e).backgroundColor);
+const plainLook = await page.$eval('label:has(#res-1440)', (e) => getComputedStyle(e).backgroundColor);
+check("ChoiceCard: the checked card looks different", checkedLook !== plainLook, `${checkedLook} vs ${plainLook}`);
+await page.focus("#quiet"); await page.keyboard.press("Space"); await wait(30);
+check("ChoiceCard type=checkbox toggles with Space", await page.$eval("#quiet", (e) => e.type === "checkbox" && e.checked));
+check("Button href renders a link styled as a button",
+  await page.$eval("#btn-link", (e) => e.tagName === "A" && e.getAttribute("href") === "#docs" && e.classList.contains("sh-btn") && !e.target));
+check("Button with an http(s) href opens in a new tab safely",
+  await page.$eval("#btn-external", (e) => e.target === "_blank" && e.rel.includes("noopener")));
+check("Badge has a warning tone", await page.$eval("#badge-warning", (e) => e.classList.contains("sh-badge--warning")));
+await page.click("#toast-outside"); await wait(120);
+check("toast() works outside components when a ToastProvider is mounted",
+  (await page.$$eval(".sh-toast", (t) => t.map((e) => e.textContent))).some((t) => t.includes("Sent from outside React")));
+const inputBorder = await page.$eval("#note, .sh-input", (e) => getComputedStyle(e).borderTopColor);
+check("Inputs use the line-strong border (3:1 contrast)", inputBorder === "rgb(118, 134, 158)", inputBorder);
+
 // Dark mode + mobile screenshots
 await page.evaluate(() => window.scrollTo(0, 0)); await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: "dark" }]); await wait(400);
 await page.screenshot({ path: shots + "dark.png", fullPage: true });

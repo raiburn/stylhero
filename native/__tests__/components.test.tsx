@@ -110,6 +110,18 @@ describe("Button", () => {
     expect(screen.getByText("Go")).toHaveStyle({ color: light.onPrimary });
   });
 
+  it("lets long labels wrap instead of cutting them off", async () => {
+    await render(<Button>New here? Create an account</Button>);
+    const label = screen.getByText("New here? Create an account");
+    expect(label.props.numberOfLines).toBeUndefined();
+    expect(label).toHaveStyle({ flexShrink: 1, textAlign: "center" });
+  });
+
+  it("can still cap the label to a number of lines", async () => {
+    await render(<Button numberOfLines={1}>Short</Button>);
+    expect(screen.getByText("Short").props.numberOfLines).toBe(1);
+  });
+
   it("grows with large font sizes instead of clipping", async () => {
     await render(<Button>Grow</Button>);
     const style = flat(screen.getByRole("button", { name: "Grow" }));
@@ -197,6 +209,29 @@ describe("TextField", () => {
       Object.defineProperty(Platform, "OS", { value: original, configurable: true });
       announce.mockRestore();
     }
+  });
+
+  it("does not announce or use a live region when announceError is false", async () => {
+    const announce = jest.spyOn(AccessibilityInfo, "announceForAccessibility").mockImplementation(() => {});
+    const original = Platform.OS;
+    Object.defineProperty(Platform, "OS", { value: "ios", configurable: true });
+    try {
+      const { rerender } = await render(<TextField label="Budget" announceError={false} />);
+      await rerender(<TextField label="Budget" announceError={false} error="Too low" />);
+      expect(announce).not.toHaveBeenCalled();
+      expect(screen.getByText("Too low").props.accessibilityLiveRegion).toBe("none");
+      // the error is still read with the field
+      expect(screen.getByLabelText("Budget").props.accessibilityHint).toBe("Too low");
+    } finally {
+      Object.defineProperty(Platform, "OS", { value: original, configurable: true });
+      announce.mockRestore();
+    }
+  });
+
+  it("uses the line-strong border so the field is visible (3:1)", async () => {
+    await render(<TextField label="Budget" />);
+    expect(JSON.stringify(screen.toJSON())).toContain(`"borderColor":"${light.lineStrong}"`);
+    expect(JSON.stringify(screen.toJSON())).not.toContain(`"borderColor":"${light.line}"`);
   });
 
   it("is not editable when disabled", async () => {

@@ -19,6 +19,13 @@ export type TextFieldProps = Omit<TextInputProps, "style" | "editable"> & {
   hint?: string;
   /** Error message. Turns the border red and is announced when it appears. */
   error?: string;
+  /**
+   * Announce a new `error` to screen readers (iOS announcement, Android live
+   * region). Default true. Set it to false when the screen already moves focus
+   * to the first invalid field or shows its own error summary, so the error
+   * isn't read twice. The error is still in the field's hint either way.
+   */
+  announceError?: boolean;
   disabled?: boolean;
   /** Icon or text before / after the input, e.g. a search icon or "$". */
   leading?: ReactNode;
@@ -31,6 +38,7 @@ export function TextField({
   label,
   hint,
   error,
+  announceError = true,
   disabled,
   leading,
   trailing,
@@ -47,13 +55,13 @@ export function TextField({
   // iOS has no live regions, so announce a new error explicitly.
   const lastError = useRef<string | undefined>(undefined);
   useEffect(() => {
-    if (error && error !== lastError.current && Platform.OS === "ios") {
+    if (announceError && error && error !== lastError.current && Platform.OS === "ios") {
       AccessibilityInfo.announceForAccessibility(`${label}: ${error}`);
     }
     lastError.current = error;
-  }, [error, label]);
+  }, [announceError, error, label]);
 
-  const borderColor = error ? theme.colors.danger : focused ? theme.colors.primary : theme.colors.line;
+  const borderColor = error ? theme.colors.danger : focused ? theme.colors.primary : theme.colors.lineStrong;
 
   return (
     <View style={[{ gap: theme.spacing[2] }, style]}>
@@ -104,7 +112,7 @@ export function TextField({
         <Text
           variant="small"
           tone={error ? "danger" : "muted"}
-          accessibilityLiveRegion={error ? "polite" : "none"}
+          accessibilityLiveRegion={error && announceError ? "polite" : "none"}
           importantForAccessibility={error ? "yes" : "no"}
         >
           {message}

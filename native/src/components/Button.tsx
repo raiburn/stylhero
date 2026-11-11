@@ -23,6 +23,11 @@ export type ButtonProps = Omit<PressableProps, "children" | "style"> & {
   fullWidth?: boolean;
   /** Icon shown before the label (e.g. a lucide-react-native icon). */
   icon?: ReactNode;
+  /**
+   * Caps the label's lines. Unset by default so long labels wrap instead of
+   * being cut off when the user picks a large text size.
+   */
+  numberOfLines?: number;
   style?: StyleProp<ViewStyle>;
 };
 
@@ -52,6 +57,7 @@ export function Button({
   loading = false,
   fullWidth,
   icon,
+  numberOfLines,
   disabled,
   style,
   hitSlop,
@@ -79,6 +85,8 @@ export function Button({
             // minHeight, not height: the label grows with the user's font size setting
             minHeight: height,
             minWidth: height,
+            maxWidth: "100%",
+            paddingVertical: theme.spacing[1],
             paddingHorizontal: size === "sm" ? theme.spacing[3] : size === "lg" ? theme.spacing[6] : theme.spacing[4],
             flexDirection: "row",
             alignItems: "center",
@@ -103,8 +111,12 @@ export function Button({
             {loading ? <ActivityIndicator size="small" color={p.fg} testID="button-spinner" /> : icon}
             <Text
               variant="body"
-              numberOfLines={1}
-              style={[theme.text("body", "700"), { color: p.fg, fontSize: size === "sm" ? 13 : size === "lg" ? 16 : 15 }]}
+              numberOfLines={numberOfLines}
+              style={[
+                theme.text("body", "700"),
+                // flexShrink lets the label wrap inside the button instead of overflowing it
+                { color: p.fg, fontSize: size === "sm" ? 13 : size === "lg" ? 16 : 15, flexShrink: 1, textAlign: "center" },
+              ]}
             >
               {children}
             </Text>

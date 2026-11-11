@@ -38,7 +38,7 @@ for (const family of ["color", "spacing", "radius", "shadow"]) {
 }
 
 // ---------- contrast ----------
-// [text, background, minimum ratio]; checked in every theme.
+// [foreground, background, minimum ratio]; checked in every theme.
 const PAIRS = [
   ["ink", "surface", 4.5], ["ink", "surface-raised", 4.5],
   ["ink-muted", "surface", 4.5], ["ink-muted", "surface-raised", 4.5],
@@ -46,6 +46,8 @@ const PAIRS = [
   ["primary", "surface-raised", 4.5], ["primary", "primary-soft", 4.5], ["primary", "sky-soft", 4.5],
   ["accent-ink", "accent-soft", 4.5], ["success", "success-soft", 4.5], ["danger", "danger-soft", 4.5],
   ["on-accent", "accent", 4.5], ["ink", "sky-soft", 4.5],
+  // non-text: control borders must stay visible (WCAG 1.4.11)
+  ["line-strong", "surface", 3], ["line-strong", "surface-raised", 3], ["line-strong", "surface-sunken", 3],
   ["ink-muted", "surface-raised", 3, "control borders (checkbox, switch track)"],
 ];
 const lum = (hex) => {
@@ -159,8 +161,35 @@ ${Object.entries(families).filter(([k]) => !TAILWIND_DEFAULT_FONTS.has(k)).map((
 }
 `;
 
+// ---------- tailwind-preset.cjs (Tailwind CSS v3) ----------
+const strip = (name, prefix) => name.replace(new RegExp("^" + prefix + "-"), "");
+const presetTheme = {
+  colors: Object.fromEntries(tokens.color.tokens.map((t) => [t.name, `var(--${t.name})`])),
+  fontFamily: Object.fromEntries(Object.keys(families).map((k) => [k, [`var(--font-${k})`]])),
+  borderRadius: Object.fromEntries((tokens.radius?.tokens ?? []).map((t) => [strip(t.name, "radius"), `var(--${t.name})`])),
+  boxShadow: Object.fromEntries((tokens.shadow?.tokens ?? []).map((t) => [strip(t.name, "shadow"), `var(--${t.name})`])),
+};
+const preset = [
+  "/*",
+  "  GENERATED from tokens.json by scripts/build-tokens.mjs. Do not edit; edit tokens.json and run `npm run tokens`.",
+  "",
+  "  Stylhero for Tailwind CSS v3 (the v4 equivalent is tailwind.css). In tailwind.config:",
+  '    presets: [require("@stylhero/ui/tailwind-preset")]',
+  "  Load the CSS before Tailwind's layers, with postcss-import in your PostCSS config:",
+  '    @import "@stylhero/ui/styles/tokens.css";',
+  '    @import "@stylhero/ui/styles/components.css";',
+  "    @tailwind base; @tailwind components; @tailwind utilities;",
+  "  postcss-import inlines components.css, so Tailwind v3 moves its `@layer components`",
+  "  rules into its own components layer (after preflight, before utilities).",
+  "  Values are CSS variables, so light and dark come from tokens.css.",
+  "*/",
+  "module.exports = " + JSON.stringify({ theme: { extend: presetTheme } }, null, 2) + ";",
+  "",
+].join("\n");
+
 writeFileSync(join(stylesDir, "tokens.css"), css);
 writeFileSync(join(stylesDir, "tailwind.css"), tw);
+writeFileSync(join(stylesDir, "tailwind-preset.cjs"), preset);
 if (existsSync(dirname(mirror))) copyFileSync(src, mirror);
 
 console.log(

@@ -37,7 +37,35 @@ Import the styles once, in your global stylesheet (`app/globals.css` in Next.js,
 
 Or from JavaScript: `import "@stylhero/ui/tokens.css"; import "@stylhero/ui/components.css";`
 
-With Tailwind you also get `bg-primary`, `text-ink`, `text-ink-muted`, `border-line`, `bg-surface-raised`, `font-display`, `shadow-card`, and so on.
+With Tailwind you also get `bg-primary`, `text-ink`, `text-ink-muted`, `border-line`, `border-line-strong`, `bg-surface-raised`, `font-display`, `shadow-card`, and so on.
+
+### Tailwind v3
+
+`tailwind.css` uses Tailwind v4's `@theme`. On Tailwind v3, use the preset instead:
+
+```js
+// tailwind.config.js
+module.exports = {
+  presets: [require("@stylhero/ui/tailwind-preset")],
+  content: ["./src/**/*.{ts,tsx}"],
+};
+```
+
+```js
+// postcss.config.js: postcss-import must run before tailwindcss
+module.exports = { plugins: { "postcss-import": {}, tailwindcss: {}, autoprefixer: {} } };
+```
+
+```css
+/* globals.css: the imports go first */
+@import "@stylhero/ui/styles/tokens.css";
+@import "@stylhero/ui/styles/components.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+`components.css` puts its rules in `@layer components`. Inlined by postcss-import, Tailwind v3 moves them into its own components layer, after preflight and before utilities, so utility classes still override them. Import the files by their `styles/` path: postcss-import doesn't read package `exports`.
 
 ## Fonts
 
