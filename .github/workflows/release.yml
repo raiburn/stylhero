@@ -1,0 +1,81 @@
+name: Release
+
+# Publishes @stylhero/ui when a version bump reaches main: if the version in
+# ui/package.json isn't on npm yet, publish it (with provenance), then tag it
+# and create a GitHub release from its CHANGELOG entry.
+on:
+  push:
+    branches: [main]
+    paths: [ui/package.json]
+  # rerun by hand, e.g. after a failed publish
+  workflow_dispatch:
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: write # tag + GitHub release
+  id-token: write # npm trusted publishing and provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ui
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Is this version already on npm?
+        id: check
+        run: |
+          version=$(node -p "require('./package.json').version")
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if npm view "@stylhero/ui@$version" version > /dev/null 2>&1; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::@stylhero/ui@$version is already on npm, nothing to publish"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # trusted publishing needs npm 11.5.1 or newer
+      - if: steps.check.outputs.published == 'false'
+        run: npm install -g npm@latest
+
+      - if: steps.check.outputs.published == 'false'
+        run: npm ci
+
+      # prepublishOnly runs typecheck, build and the behavior tests first
+      - name: Publish to npm
+        if: steps.check.outputs.published == 'false'
+        run: npm publish --provenance
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+          # only needed until trusted publishing is set up on npmjs.com
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Tag and create the GitHub release
+        if: steps.check.outputs.published == 'false'
+        run: |
+          tag="v${{ steps.check.outputs.version }}"
+          # the CHANGELOG section for this version, without its heading
+          awk -v v="${{ steps.check.outputs.version }}" '
+            $0 ~ "^## " v "( |$)" { on = 1; next }
+            on && /^## / { exit }
+            on { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if gh release view "$tag" > /dev/null 2>&1; then
+            echo "::notice::release $tag already exists"
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes-file "$RUNNER_TEMP/notes.md"
+          fi
+        env:
+          GH_TOKEN: ${{ github.token }}

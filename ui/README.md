@@ -1,5 +1,7 @@
 # @stylhero/ui
 
+[![npm](https://img.shields.io/npm/v/@stylhero/ui)](https://www.npmjs.com/package/@stylhero/ui) [![CI](https://github.com/raiburn/stylhero/actions/workflows/ci.yml/badge.svg)](https://github.com/raiburn/stylhero/actions/workflows/ci.yml) [![license](https://img.shields.io/npm/l/@stylhero/ui)](https://github.com/raiburn/stylhero/blob/main/LICENSE)
+
 Stylhero design system for React: design tokens, a Tailwind v4 theme, plain CSS component styles and 80+ React components covering Material UI, MUI Lab and the free MUI X packages (date pickers, DataGrid, TreeView, charts).
 
 **Look:** Ocean palette (navy `#173a7a`, sky `#3ba3e6`, lemon `#f5d23d`) · Plus Jakarta Sans · Lucide icons. Light and dark themes.
@@ -121,6 +123,10 @@ Dark mode follows the OS. Force a theme with `<html data-theme="dark">` or `data
 
 The wordmark and app icon ship as SVGs in `@stylhero/ui/logo/` (`stylhero-wordmark.svg`, `stylhero-wordmark-reverse.svg`, `stylhero-mark.svg`). Copy them into your app's `public/` folder.
 
+## Versions
+
+Changes are listed in [CHANGELOG.md](https://github.com/raiburn/stylhero/blob/main/ui/CHANGELOG.md). While the version is 0.x, a minor version may contain breaking changes, always listed under **Changed** or **Removed**. Pin with `~0.5.0` to accept only patches.
+
 ## License
 
-See the [repository](https://github.com/raiburn/stylhero).
+MIT. Third-party licenses are in `THIRD_PARTY_NOTICES.md`.

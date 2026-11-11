@@ -4,6 +4,14 @@ Clear, confident interfaces: deep navy for trust, sky blue for clarity, a flash 
 
 Stylhero is a personal style library. It is used for web apps built with Next.js and for pages Claude makes. The same tokens and component classes ship as the `@stylhero/ui` npm package (`tokens.css`, `components.css`, `tailwind.css` and React components), so anything built here matches the apps.
 
+## React components
+
+In apps, use the `@stylhero/ui` components rather than writing the `sh-*` classes by hand. Each component's page shows its props.
+
+- Components that render their own element also take that element's HTML attributes and put them on it: `id`, `style`, `data-*`, `aria-*` and event handlers. Use them for anchors (`<Card id="pricing">`), test hooks (`data-testid`), accessible names (`aria-label`, `aria-describedby`) and analytics. Don't wrap a component in an extra `<div>` just to hold an attribute.
+- `className` and `style` are added to the component's own, so they extend it rather than replace it. Your `onClick`, `onKeyDown` and similar handlers run alongside the ones the component uses internally.
+- Exceptions: Tooltip, Popover, Menu and the transitions wrap the element you pass them, so put attributes on that element. Combobox, NumberInput and the date and time pickers take only `id`, `name`, `disabled` and `className`.
+
 ## Logo
 
 The wordmark is lowercase **stylhero** in Plus Jakarta Sans ExtraBold, followed by a round dot. The letters are outlined paths, so the logo looks the same everywhere without the font installed.
