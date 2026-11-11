@@ -61,3 +61,33 @@ jobs:
 
       - name: Package contents
         run: npm run check:pack
+
+  native:
+    name: native (React Native)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: native
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: native/package-lock.json
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # also regenerates src/theme/tokens.ts from tokens.json
+      - name: Build
+        run: npm run build
+
+      - name: Generated files are committed
+        run: git diff --exit-code -- src/theme/tokens.ts
+
+      - name: Tests
+        run: npm test
